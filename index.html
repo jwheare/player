@@ -362,10 +362,15 @@
                 </td>
             </tr>
         </table>
+        <p><a href="http://github.com/jwheare/player/tree">Code on Github</a> | Made by <a href="http://james.wheare.org/">James Wheare</a> | Work in Progress. Mostly a UI concept for now.</p>
     </div>
+    
     <script src="playdar.js"></script>
     <script src="soundmanager2-nodebug-jsmin.js"></script>
     <script>
+    
+        Playdar.REFRESH_INTERVAL = 100;
+        Playdar.MAX_CONCURRENT_RESOLUTIONS = 10;
         var auth_details = {
             name: "Media Player",
             website: "http://player/",
