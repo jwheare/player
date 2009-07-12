@@ -1,0 +1,88 @@
+div#container {
+    min-width: 500px;
+    font: normal 11px "Lucida Grande";
+}
+table#browser {
+    width: 100%;
+    border: 1px solid #bbb;
+}
+table#browser a {
+    display: block;
+    padding: 4px;
+    text-decoration: none;
+    color: #999;
+}
+table#browser tr {
+    vertical-align: top;
+}
+table#browser td.pane ol {
+    height: 200px;
+    overflow: auto;
+    margin: 0;
+    padding: 0;
+}
+table#browser th {
+    text-align: left;
+}
+table#browser th a {
+    color: #fff;
+    background: #bbb;
+}
+table#browser td.pane li {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    white-space: nowrap;
+}
+table#browser td.pane li.odd {
+    background: #EBFBFF;
+}
+table#browser td.pane li.selected {
+    background: #C0ECFF;
+}
+table#browser td.pane td a:hover,
+table#browser td.pane ol a:hover {
+    background: #EAEAEA;
+}
+#artistPane {
+    width: 50%;
+    border-right: 1px solid #bbb;
+}
+#albumPane {
+    width: 50%;
+}
+#trackPane {
+    width: 50%;
+    border-top: 1px solid #bbb;
+}
+table#tracks {
+    width: 100%;
+}
+table#tracks td,
+table#tracks th,
+#albumHead {
+    border-left: 1px solid #ddd;
+}
+table#tracks tr:hover td a {
+    background: #EAEAEA;
+}
+table#tracks tr.odd td {
+    background: #EBFBFF;
+}
+table#tracks th.play,
+table#tracks td.play {
+    width: 10px;
+    border-left: 0;
+}
+table#tracks td.play a {
+    width: 10px;
+    text-align: center;
+}
+table#tracks td.play span {
+    display: none;
+}
+table#tracks a.resolving span.resolving,
+table#tracks a.notFound span.notFound,
+table#tracks a.resolved span.resolved {
+    display: inline;
+}
