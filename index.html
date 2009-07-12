@@ -368,11 +368,12 @@
     <script>
         var auth_details = {
             name: "Media Player",
-            website: "http://localhost/~james/player/",
-            receiverurl: "http://localhost/~james/player/playdarauth.html"
+            website: "http://player/",
+            receiverurl: "http://player/playdarauth.html"
         };
         
         var track_handler = function (track) {
+            // Add a classname to the item play cell
             var qid = Playdar.Util.generate_uuid();
             var play = Playdar.Util.select('td.play a', track.element);
             play[0].className = 'resolving q' + qid;
@@ -387,16 +388,19 @@
         });
         var results_handler = function (response, final_answer) {
             if (final_answer) {
+                // Register a perfect match only
+                var className = 'notFound';
+                if (response.results.length) {
+                    var result = response.results[0];
+                    if (result.score == 1) {
+                        var sid = result.sid;
+                        className = 'resolved sid' + sid;
+                        Playdar.player.register_stream(result);
+                    }
+                }
+                // Update item play button class name
                 var qidClass = 'q' + response.qid;
                 var play = Playdar.Util.select('.' + qidClass);
-                var className;
-                if (response.results.length) {
-                    var sid = response.results[0].sid;
-                    className = 'resolved sid' + sid;
-                    Playdar.player.register_stream(response.results[0]);
-                } else {
-                    className = 'notFound';
-                }
                 play[0].className = className + ' ' + qidClass;
             }
         };
@@ -410,8 +414,24 @@
         };
         
         document.getElementById('tracks').onclick = function (event) {
-            if (event.target.nodeName == 'A') {
-                var classes = event.target.className.split(' ');
+            // Get the play button link
+            var targetLink;
+            switch (event.target.nodeName) {
+            case 'SPAN':
+                if (event.target.parentNode.nodeName == 'A') {
+                    targetLink = event.target.parentNode;
+                }
+                break;
+            case 'A':
+                targetLink = event.target;
+                break;
+            }
+            if (   targetLink
+                && targetLink.parentNode.nodeName == 'TD'
+                && targetLink.parentNode.className == 'play'
+            ) {
+                // Find an SID class and play stream
+                var classes = targetLink.className.split(' ');
                 for (var i = 0; i < classes.length; i++) {
                     if (classes[i].indexOf('sid') !== -1) {
                         var sid = classes[i].replace('sid', '');
@@ -420,6 +440,6 @@
                 }
                 return false;
             }
-        }
+        };
     </script>
 </body>
