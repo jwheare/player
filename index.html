@@ -349,7 +349,7 @@
                                 <a href="#" class="fn">Take Control</a>
                             </td>
                             <td>
-                                <a href="#">1:48</a>
+                                <a href="#">2:01</a>
                             </td>
                             <td>
                                 <a href="#" class="contributor">James Wheare</a>
@@ -372,14 +372,19 @@
             receiverurl: "http://localhost/~james/player/playdarauth.html"
         };
         
-        Playdar.setup(auth_details);
-        soundManager.url = 'soundmanager2_flash9.swf';
-        soundManager.flashVersion = 9;
-        soundManager.onload = function () {
-            Playdar.setup_player(soundManager);
-            Playdar.client.init();
+        var track_handler = function (track) {
+            var qid = Playdar.Util.generate_uuid();
+            var play = Playdar.Util.select('td.play a', track.element);
+            play[0].className = 'resolving q' + qid;
+            return qid;
         };
         
+        Playdar.setup(auth_details);
+        Playdar.client.register_listeners({
+            onAuth: function () {
+                Playdar.client.autodetect(track_handler);
+            }
+        });
         var results_handler = function (response, final_answer) {
             if (final_answer) {
                 var qidClass = 'q' + response.qid;
@@ -397,23 +402,22 @@
         };
         Playdar.client.register_results_handler(results_handler);
         
-        var track_handler = function (track) {
-            var qid = Playdar.Util.generate_uuid();
-            var play = Playdar.Util.select('td.play a', track.element);
-            play[0].className = 'resolving q' + qid;
-            return qid;
+        soundManager.url = 'soundmanager2_flash9.swf';
+        soundManager.flashVersion = 9;
+        soundManager.onload = function () {
+            Playdar.setup_player(soundManager);
+            Playdar.client.init();
         };
-        Playdar.client.autodetect(track_handler);
         
         document.getElementById('tracks').onclick = function (event) {
             if (event.target.nodeName == 'A') {
                 var classes = event.target.className.split(' ');
                 for (var i = 0; i < classes.length; i++) {
-                    console.log(classes[i].indexOf('sid'));
-                    // var qid = qidClass.replace('q', '');
-                    // Playdar.player.play_stream(sid);
+                    if (classes[i].indexOf('sid') !== -1) {
+                        var sid = classes[i].replace('sid', '');
+                        Playdar.player.play_stream(sid);
+                    }
                 }
-                
                 return false;
             }
         }
