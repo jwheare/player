@@ -10,7 +10,7 @@ table#browser a {
     display: block;
     padding: 4px;
     text-decoration: none;
-    color: #999;
+    color: #666;
 }
 table#browser tr {
     vertical-align: top;
@@ -34,11 +34,12 @@ table#browser td.pane li {
     list-style: none;
     white-space: nowrap;
 }
-table#browser td.pane li.odd {
+table#browser td.pane li:nth-child(odd) a {
     background: #EBFBFF;
 }
-table#browser td.pane li.selected {
+table#browser td.pane li.selected a {
     background: #C0ECFF;
+    color: #222;
 }
 table#browser td.pane td a:hover,
 table#browser td.pane ol a:hover {
@@ -61,12 +62,13 @@ table#tracks {
 table#tracks td,
 table#tracks th,
 #albumHead {
+    position: relative;
     border-left: 1px solid #ddd;
 }
 table#tracks tr:hover td a {
     background: #EAEAEA;
 }
-table#tracks tr.odd td {
+table#tracks tr:nth-child(odd) td {
     background: #EBFBFF;
 }
 table#tracks th.play,
@@ -80,12 +82,25 @@ table#tracks td.play a {
 }
 table#tracks span.resolving,
 table#tracks span.resolved,
-table#tracks a.resolving span.notFound,
-table#tracks a.resolved span.notFound {
+table#tracks tr.resolving span.notFound,
+table#tracks tr.resolved span.notFound {
     display: none;
 }
-table#tracks a.resolving span.resolving,
-table#tracks a.notFound span.notFound,
-table#tracks a.resolved span.resolved {
+table#tracks tr.resolving span.resolving,
+table#tracks tr.notFound span.notFound,
+table#tracks tr.resolved span.resolved {
     display: inline;
+}
+table#tracks tr.resolved a {
+    color: #222;
+}
+table#tracks tr.playing a {
+    background: #C0ECFF;
+}
+
+#chooseAlbum {
+    margin: 90px 10px;
+    padding: 0;
+    text-align: center;
+    font-size: 18px;
 }
