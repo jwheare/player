@@ -78,7 +78,10 @@ table#tracks td.play a {
     width: 10px;
     text-align: center;
 }
-table#tracks td.play span {
+table#tracks span.resolving,
+table#tracks span.resolved,
+table#tracks a.resolving span.notFound,
+table#tracks a.resolved span.notFound {
     display: none;
 }
 table#tracks a.resolving span.resolving,
