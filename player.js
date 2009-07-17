@@ -107,6 +107,10 @@ PLAYER = {
         return false;
     },
     
+    fetch_artists: function () {
+        PLAYER.get_artist_page(1);
+    },
+    artist_names: [],
     get_artist_page: function (page) {
         // console.info('load artist page', page);
         $.getJSON(PLAYER.lastfm_ws_url + "/2.0/?callback=?", {
@@ -117,29 +121,29 @@ PLAYER = {
             page: page
         }, function (json) {
             var response = json.artists;
-            var artist_names = [];
             // Add the artists to our lookup
             $.each(response.artist, function (index, artist) {
                 // console.log(page+':'+index, artist.name);
                 if (artist.playcount) {
-                    artist_names.push(artist.name);
+                    PLAYER.artist_names.push(artist.name);
                 } else {
                     // console.warn('no plays');
                 }
             });
-            setTimeout(function () {
-                PLAYER.load_artists(artist_names);
-                // Get the other pages if we haven't already
-                var next_page = page + 1;
-                if (next_page <= 3/*response.totalPages*/) {
-                    PLAYER.get_artist_page(next_page);
-                }
-            }, 20);
+            PLAYER.load_artists();
+            // Get the other pages
+            var next_page = page + 1;
+            if (next_page <= response.totalPages) {
+                PLAYER.get_artist_page(next_page);
+            }
         });
     },
     artist_lookup: {},
-    load_artists: function (artist_names) {
+    load_artists: function () {
+        // Copy current artist list and sort
+        var artist_names = $.makeArray(PLAYER.artist_names);
         artist_names.sort();
+        // Build DOM list
         var list = $('<ol>');
         $.each(artist_names, function (index, artist) {
             var id = 'artist_' + index;
@@ -156,7 +160,7 @@ PLAYER = {
     fetch_albums: function (artist) {
         PLAYER.get_album_page(PLAYER.artist_lookup[artist.attr('id')], 1);
     },
-    
+    album_names: [],
     get_album_page: function (artist, page) {
         // console.info('load album page', page);
         $.getJSON(PLAYER.lastfm_ws_url + "/2.0/?callback=?", {
@@ -168,37 +172,41 @@ PLAYER = {
             page: page
         }, function (json) {
             var response = json.albums;
-            var album_names = [];
             // Add the artists to our lookup
             $.each(response.album, function (index, album) {
                 // console.log(page+':'+index, album.name);
                 if (album.playcount) {
-                    album_names.push(album.name);
+                    PLAYER.album_names.push(album.name);
                 } else {
                     // console.warn('no plays');
                 }
             });
-            setTimeout(function () {
-                PLAYER.load_albums(album_names);
-                // Get the other pages if we haven't already
-                var next_page = page + 1;
-                if (next_page <= response['@attr'].totalPages) {
-                    PLAYER.get_album_page(next_page);
-                }
-            }, 20);
+            PLAYER.load_albums(artist);
+            // Get the other pages if we haven't already
+            var next_page = page + 1;
+            if (next_page <= response['@attr'].totalPages) {
+                PLAYER.get_album_page(next_page);
+            }
         });
     },
     album_lookup: {},
-    load_albums: function (album_names) {
+    load_albums: function (artist) {
+        // Copy current albums list and sort
+        var album_names = $.makeArray(PLAYER.album_names);
         album_names.sort();
+        // Build DOM list
         var list = $('<ol>');
+        // All link
         list.append(
             $('<li>').attr('id', 'album_all')
                      .append($('<a href="#">').text('All'))
         );
         $.each(album_names, function (index, album) {
             var id = 'album_' + index;
-            PLAYER.album_lookup[id] = album;
+            PLAYER.album_lookup[id] = {
+                'artist': artist,
+                'album': album
+            };
             list.append(
                 $('<li>').attr('id', id)
                          .append($('<a href="#">').text(album))
@@ -206,5 +214,45 @@ PLAYER = {
         });
         
         $('#albumPane').html(list);
+    },
+    
+    fetch_tracks: function (album) {
+        var album_data = PLAYER.album_lookup[album.attr('id')];
+        PLAYER.get_track_page(album_data.artist, album_data.album, 1);
+    },
+    tracks: [],
+    get_track_page: function (artist, album, page) {
+        // console.info('load album page', page);
+        $.getJSON(PLAYER.lastfm_ws_url + "/2.0/?callback=?", {
+            method: "library.gettracks",
+            api_key: PLAYER.lastfm_api_key,
+            user: PLAYER.lastfm_username,
+            artist: artist,
+            artist: album,
+            format: "json",
+            page: page
+        }, function (json) {
+            var response = json.tracks;
+            // Add the artists to our lookup
+            $.each(response.track, function (index, track) {
+                // console.log(page+':'+index, track.name);
+                if (track.playcount) {
+                    PLAYER.tracks.push(track);
+                } else {
+                    // console.warn('no plays');
+                }
+            });
+            PLAYER.load_tracks(artist, album);
+            // Get the other pages if we haven't already
+            var next_page = page + 1;
+            if (next_page <= response['@attr'].totalPages) {
+                PLAYER.get_track_page(next_page);
+            }
+        });
+    },
+    track_lookup: {},
+    // TODO Implement
+    load_tracks: function (artist, album) {
+        
     }
 };

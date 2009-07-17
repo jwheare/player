@@ -1,0 +1,14 @@
+Page load:
+ - display from cache
+ - fetch artists (lots of pages)
+   - loading bar (blocking if nothing in cache)
+   - sync with cache locally
+   - update display
+
+Click artist:
+ - load albums (not many pages) -> cache locally
+ - load tracks (a few pages) -> cache locally
+ - loading bar
+ 
+Click album:
+ - load tracks (load from cache / filter by album)

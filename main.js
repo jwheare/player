@@ -15,7 +15,7 @@ soundManager.onload = function () {
     Playdar.setup_player(soundManager);
     Playdar.client.init();
     
-    PLAYER.get_artist_page(1);
+    PLAYER.fetch_artists();
 };
 
 // Handle clicks to a track row
@@ -39,6 +39,20 @@ $('#artistList').click(function (e) {
     target_artist.addClass('selected');
     if (target_artist.size()) {
         PLAYER.fetch_albums(target_artist);
+        target.blur();
+        return false;
+    }
+});
+
+// Handle clicks to the album list
+$('#albumList').click(function (e) {
+    // Get the artist name
+    var target = $(e.target);
+    var target_album = target.closest('li');
+    $('#albumList li').removeClass('selected');
+    target_album.addClass('selected');
+    if (target_album.size()) {
+        PLAYER.fetch_tracks(target_album);
         target.blur();
         return false;
     }
