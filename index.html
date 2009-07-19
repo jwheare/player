@@ -29,7 +29,7 @@
                     <td id="artistPane" class="pane">
                         <div id="artists">
                             <ol id="artistList"></ol>
-                            <div id="artistsLoading">
+                            <div id="artistsLoading" class="progress">
                                 <img src="/progress.gif" width="220" height="19" />
                             </div>
                         </div>
@@ -38,6 +38,9 @@
                         <div id="albums">
                             <ol id="albumList"></ol>
                             <p id="chooseAlbum">Choose an artist to load their albums</p>
+                            <div id="albumsLoading" class="progress">
+                                <img src="/progress.gif" width="220" height="19" />
+                            </div>
                         </div>
                     </td>
                 </tr>
@@ -48,6 +51,9 @@
                                 <tbody id="trackTableBody">
                                 </tbody>
                             </table>
+                            <div id="tracksLoading" class="progress">
+                                <img src="/progress.gif" width="220" height="19" />
+                            </div>
                         </div>
                     </td>
                 </tr>

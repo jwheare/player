@@ -1,6 +1,7 @@
 PLAYER = {
     lastfm_api_key: "b25b959554ed76058ac220b7b2e0a026",
     lastfm_ws_url: "http://james.ws.dev.last.fm",
+    // lastfm_ws_url: "http://ws.audioscrobbler.com",
     lastfm_username: "jwheare",
     
     auth_details: {
@@ -109,8 +110,9 @@ PLAYER = {
     
     fetch_artists: function () {
         PLAYER.get_artist_page(1);
+        PLAYER.artist_names = [];
+        PLAYER.artist_lookup = {};
     },
-    artist_names: [],
     get_artist_page: function (page) {
         // console.info('load artist page', page);
         $.getJSON(PLAYER.lastfm_ws_url + "/2.0/?callback=?", {
@@ -133,12 +135,11 @@ PLAYER = {
             PLAYER.load_artists();
             // Get the other pages
             var next_page = page + 1;
-            if (next_page <= response.totalPages) {
+            if (false && next_page <= response.totalPages) {
                 PLAYER.get_artist_page(next_page);
             }
         });
     },
-    artist_lookup: {},
     load_artists: function () {
         // Copy current artist list and sort
         var artist_names = $.makeArray(PLAYER.artist_names);
@@ -161,6 +162,7 @@ PLAYER = {
     fetch_albums: function (artist) {
         $('#albumList').empty();
         $('#chooseAlbum').hide();
+        $('#albumsLoading').show();
         PLAYER.album_lookup = {};
         PLAYER.album_names = [];
         PLAYER.get_album_page(PLAYER.artist_lookup[artist.attr('id')], 1);
@@ -188,12 +190,13 @@ PLAYER = {
             PLAYER.load_albums(artist);
             // Get the other pages if we haven't already
             var next_page = page + 1;
-            if (next_page <= response['@attr'].totalPages) {
-                PLAYER.get_album_page(next_page);
+            if (next_page <= response.totalPages) {
+                PLAYER.get_album_page(artist, next_page);
             }
         });
     },
     load_albums: function (artist) {
+        $('#albumsLoading').hide();
         // Copy current albums list and sort
         var album_names = $.makeArray(PLAYER.album_names);
         album_names.sort();
@@ -204,6 +207,10 @@ PLAYER = {
             $('<li>').attr('id', 'album_all')
                      .append($('<a href="#">').text('All'))
         );
+        PLAYER.album_lookup['album_all'] = {
+            artist: artist,
+            album: ''
+        };
         $.each(album_names, function (index, album) {
             var id = 'album_' + index;
             PLAYER.album_lookup[id] = {
@@ -219,22 +226,26 @@ PLAYER = {
     
     fetch_tracks: function (album) {
         $('#trackTableBody').empty();
+        $('#tracksLoading').show();
         var album_data = PLAYER.album_lookup[album.attr('id')];
         PLAYER.tracks = [];
         PLAYER.track_lookup = {};
         PLAYER.get_track_page(album_data.artist, album_data.album, 1);
     },
     get_track_page: function (artist, album, page) {
-        // console.info('load album page', page);
-        $.getJSON(PLAYER.lastfm_ws_url + "/2.0/?callback=?", {
+        var query_params = {
             method: "library.gettracks",
             api_key: PLAYER.lastfm_api_key,
             user: PLAYER.lastfm_username,
             artist: artist,
-            album: album,
             format: "json",
             page: page
-        }, function (json) {
+        };
+        if (album) {
+            query_params.album = album;
+        }
+        // console.info('load album page', page);
+        $.getJSON(PLAYER.lastfm_ws_url + "/2.0/?callback=?", query_params, function (json) {
             var response = json.tracks;
             // Add the artists to our lookup
             $.each(response.track, function (index, track) {
@@ -248,13 +259,14 @@ PLAYER = {
             PLAYER.load_tracks(artist, album);
             // Get the other pages if we haven't already
             var next_page = page + 1;
-            if (next_page <= response['@attr'].totalPages) {
+            if (next_page <= response.totalPages) {
                 PLAYER.get_track_page(next_page);
             }
         });
     },
     // TODO Implement
     load_tracks: function (artist, album) {
+        $('#tracksLoading').hide();
         // Copy current albums list and sort
         var tracks = $.makeArray(PLAYER.tracks);
         tracks.sort(function (a, b) {
@@ -270,7 +282,7 @@ PLAYER = {
                 .append($('<td>').append($('<a href="#" class="fn">').text(track.name)))
                 .append($('<td>').append($('<a href="#">').text('N/A')))
                 .append($('<td>').append($('<a href="#" class="contributor">').text(track.artist.name)))
-                .append($('<td>').append($('<a href="#">').text(album)));
+                .append($('<td>').append($('<a href="#">').text(album || 'N/A')));
             tbody.append(trow);
         });
         Playdar.client.autodetect(PLAYER.track_handler);

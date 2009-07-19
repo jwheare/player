@@ -12,3 +12,8 @@ Click artist:
  
 Click album:
  - load tracks (load from cache / filter by album)
+ 
+ 
+tracks WS:
+- Merge in album
+- Merge in duration
