@@ -15,6 +15,54 @@ table#browser a {
 table#browser tr {
     vertical-align: top;
 }
+
+td#contactCell {
+    border-right: 1px solid #ddd;
+}
+div#contacts {
+    width: 150px;
+    margin: 0;
+    padding: 0;
+}
+div#contacts h2 {
+    margin: 0;
+    padding: 4px;
+    color: #fff;
+    background: #bbb;
+    font: normal 11px "Lucida Grande";
+    font-weight: bold;
+}
+div#contacts p {
+    margin: 0;
+    padding: 3px;
+}
+div#contacts ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+div#contacts li {
+    margin: 0;
+    padding: 0;
+}
+div#contacts li a {
+    padding: 3px;
+    color: #bbb;
+    overflow: hidden;
+}
+div#contacts li a.online {
+    font-weight: bold;
+}
+div#contacts li a.playdar {
+    color: #000;
+}
+div#contacts li:nth-child(odd) a {
+    background: #EBFBFF;
+}
+div#contacts li a:hover {
+    background: #EAEAEA;
+}
+
 table#browser td.pane ol {
     height: 200px;
     overflow: auto;
@@ -49,58 +97,76 @@ table#browser td.pane ol a:hover {
     width: 50%;
     border-right: 1px solid #bbb;
 }
+#artists {
+    position: relative;
+}
+div#artistsLoading {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin: -10px 0 0 -110px;
+}
 #albumPane {
     width: 50%;
 }
-#trackPane {
-    width: 50%;
-    border-top: 1px solid #bbb;
+#albums {
+    position: relative;
 }
-table#tracks {
+#chooseAlbum {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    margin-top: -15px;
+    text-align: center;
+    font-size: 18px;
+    height: 30px;
+}
+#trackPane {
+    border-top: 1px solid #bbb;
+    width: 50%;
+}
+#tracks {
+    min-height: 300px;
+}
+table#trackTable {
     width: 100%;
 }
-table#tracks td,
-table#tracks th,
+table#trackTable td,
+table#trackTable th,
 #albumHead {
     position: relative;
     border-left: 1px solid #ddd;
 }
-table#tracks tr:hover td a {
+table#trackTable tr:hover td a {
     background: #EAEAEA;
 }
-table#tracks tr:nth-child(odd) td {
+table#trackTable tr:nth-child(odd) td {
     background: #EBFBFF;
 }
-table#tracks th.play,
-table#tracks td.play {
+table#trackTable th.play,
+table#trackTable td.play {
     width: 10px;
     border-left: 0;
 }
-table#tracks td.play a {
+table#trackTable td.play a {
     width: 10px;
     text-align: center;
 }
-table#tracks span.resolving,
-table#tracks span.resolved,
-table#tracks tr.resolving span.notFound,
-table#tracks tr.resolved span.notFound {
+table#trackTable span.resolving,
+table#trackTable span.resolved,
+table#trackTable tr.resolving span.notFound,
+table#trackTable tr.resolved span.notFound {
     display: none;
 }
-table#tracks tr.resolving span.resolving,
-table#tracks tr.notFound span.notFound,
-table#tracks tr.resolved span.resolved {
+table#trackTable tr.resolving span.resolving,
+table#trackTable tr.notFound span.notFound,
+table#trackTable tr.resolved span.resolved {
     display: inline;
 }
-table#tracks tr.resolved a {
+table#trackTable tr.resolved a {
     color: #222;
 }
-table#tracks tr.playing a {
+table#trackTable tr.playing a {
     background: #C0ECFF;
-}
-
-#chooseAlbum {
-    margin: 90px 10px;
-    padding: 0;
-    text-align: center;
-    font-size: 18px;
 }

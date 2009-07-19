@@ -5,6 +5,7 @@ Playdar.setup(PLAYER.auth_details);
 Playdar.client.register_listeners({
     onAuth: function () {
         Playdar.client.autodetect(PLAYER.track_handler);
+        PLAYER.load_roster();
     }
 });
 Playdar.client.register_results_handler(PLAYER.results_handler);

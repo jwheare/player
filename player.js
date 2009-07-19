@@ -36,7 +36,7 @@ PLAYER = {
             track_item.removeClass('playing');
             track_item.removeClass('paused');
         }
-        Playdar.player.stop_all();
+        Playdar.player.stop_current();
     },
     onResultFinish: function () {
         PLAYER.onResultStop.call(this);
@@ -154,13 +154,17 @@ PLAYER = {
             );
         });
         
+        $('#artistsLoading').hide();
         $('#artistList').html(list.html());
     },
     
     fetch_albums: function (artist) {
+        $('#albumList').empty();
+        $('#chooseAlbum').hide();
+        PLAYER.album_lookup = {};
+        PLAYER.album_names = [];
         PLAYER.get_album_page(PLAYER.artist_lookup[artist.attr('id')], 1);
     },
-    album_names: [],
     get_album_page: function (artist, page) {
         // console.info('load album page', page);
         $.getJSON(PLAYER.lastfm_ws_url + "/2.0/?callback=?", {
@@ -189,13 +193,12 @@ PLAYER = {
             }
         });
     },
-    album_lookup: {},
     load_albums: function (artist) {
         // Copy current albums list and sort
         var album_names = $.makeArray(PLAYER.album_names);
         album_names.sort();
         // Build DOM list
-        var list = $('<ol>');
+        var list = $('#albumList');
         // All link
         list.append(
             $('<li>').attr('id', 'album_all')
@@ -212,15 +215,15 @@ PLAYER = {
                          .append($('<a href="#">').text(album))
             );
         });
-        
-        $('#albumPane').html(list);
     },
     
     fetch_tracks: function (album) {
+        $('#trackTableBody').empty();
         var album_data = PLAYER.album_lookup[album.attr('id')];
+        PLAYER.tracks = [];
+        PLAYER.track_lookup = {};
         PLAYER.get_track_page(album_data.artist, album_data.album, 1);
     },
-    tracks: [],
     get_track_page: function (artist, album, page) {
         // console.info('load album page', page);
         $.getJSON(PLAYER.lastfm_ws_url + "/2.0/?callback=?", {
@@ -228,7 +231,7 @@ PLAYER = {
             api_key: PLAYER.lastfm_api_key,
             user: PLAYER.lastfm_username,
             artist: artist,
-            artist: album,
+            album: album,
             format: "json",
             page: page
         }, function (json) {
@@ -250,9 +253,58 @@ PLAYER = {
             }
         });
     },
-    track_lookup: {},
     // TODO Implement
     load_tracks: function (artist, album) {
-        
+        // Copy current albums list and sort
+        var tracks = $.makeArray(PLAYER.tracks);
+        tracks.sort(function (a, b) {
+            return a.playcount > b.playcount;
+        });
+        // Build DOM list
+        var tbody = $('#trackTableBody');
+        $.each(tracks, function (index, track) {
+            var id = 'track_' + index;
+            PLAYER.track_lookup[id] = track;
+            var trow = $('<tr class="haudio">')
+                .append('<td class="play"><a href="#"><span class="resolved">-</span><span class="resolving">.</span><span class="notFound">&nbsp;</span></a></td>')
+                .append($('<td>').append($('<a href="#" class="fn">').text(track.name)))
+                .append($('<td>').append($('<a href="#">').text('N/A')))
+                .append($('<td>').append($('<a href="#" class="contributor">').text(track.artist.name)))
+                .append($('<td>').append($('<a href="#">').text(album)));
+            tbody.append(trow);
+        });
+        Playdar.client.autodetect(PLAYER.track_handler);
+    },
+    
+    roster_callback: function (json) {
+        var playdar, res, list_item;
+        $('#contactLoading').hide();
+        $.each(json, function (i, contact) {
+            playdar = false;
+            for (res in contact.resources) {
+                if (contact.resources[res].message == "Daemon not human.") {
+                    playdar = true;
+                }
+            }
+            contact_link = $('<a>')
+                .text(contact.name || contact.jid)
+                .attr('title', contact.jid)
+                .attr('href', 'jabber://' + contact.jid);
+            if (contact.online) {
+                contact_link.addClass('online');
+            }
+            if (playdar) {
+                contact_link.addClass('playdar');
+            }
+            $('#contactList').append($('<li>').append(contact_link));
+        });
+    },
+    load_roster: function () {
+        var query_params = Playdar.client.add_auth_token({
+            call_id: new Date().getTime(),
+            jsonp: 'PLAYER.roster_callback'
+        });
+        var url = Playdar.client.get_base_url('/greynet/get_roster', query_params);
+        Playdar.Util.loadjs(url);
     }
 };

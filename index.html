@@ -10,6 +10,14 @@
         <table id="browser" cellspacing="0" cellpadding="0">
             <tbody>
                 <tr>
+                    <td rowspan="3" id="contactCell">
+                        <div id="contacts">
+                            <h2>Contacts</h2>
+                            <p id="contactLoading">Loading contacts…</p>
+                            <ul id="contactList">
+                            </ul>
+                        </div>
+                    </td>
                     <th id="artistHead">
                         <a href="#">Artists</a>
                     </th>
@@ -19,290 +27,28 @@
                 </tr>
                 <tr>
                     <td id="artistPane" class="pane">
-                        <ol id="artistList"></ol>
+                        <div id="artists">
+                            <ol id="artistList"></ol>
+                            <div id="artistsLoading">
+                                <img src="/progress.gif" width="220" height="19" />
+                            </div>
+                        </div>
                     </td>
                     <td id="albumPane" class="pane">
-                        <p id="chooseAlbum">Choose an artist to load their albums</p>
+                        <div id="albums">
+                            <ol id="albumList"></ol>
+                            <p id="chooseAlbum">Choose an artist to load their albums</p>
+                        </div>
                     </td>
                 </tr>
                 <tr>
                     <td id="trackPane" class="pane" class="pane" colspan="2">
-                        <table id="tracks" cellspacing="0" cellpadding="0">
-                            <tbody>
-                                <tr class="head" id="trackHead">
-                                    <th class="play">
-                                        <a href="#">&nbsp;</a>
-                                    </th>
-                                    <th>
-                                        <a href="#">Name</a>
-                                    </th>
-                                    <th>
-                                        <a href="#">Time</a>
-                                    </th>
-                                    <th>
-                                        <a href="#">Artist</a>
-                                    </th>
-                                    <th>
-                                        <a href="#">Album</a>
-                                    </th>
-                                </tr>
-                                <tr class="haudio">
-                                    <td class="play">
-                                        <a href="#"><span class="resolved">-</span><span class="resolving">.</span><span class="notFound">&nbsp;</span></a>
-                                    </td>
-                                    <td>
-                                        <a href="#" class="fn">Rockin' Stroll</a>
-                                    </td>
-                                    <td>
-                                        <a href="#">1:46</a>
-                                    </td>
-                                    <td>
-                                        <a href="#" class="contributor">The Lemonheads</a>
-                                    </td>
-                                    <td>
-                                        <a href="#">It's a Shame About Ray</a>
-                                    </td>
-                                </tr>
-                                <tr class="haudio">
-                                    <td class="play">
-                                        <a href="#"><span class="resolved">-</span><span class="resolving">.</span><span class="notFound">&nbsp;</span></a>
-                                    </td>
-                                    <td>
-                                        <a href="#" class="fn">Confetti</a>
-                                    </td>
-                                    <td>
-                                        <a href="#">2:44</a>
-                                    </td>
-                                    <td>
-                                        <a href="#" class="contributor">The Lemonheads</a>
-                                    </td>
-                                    <td>
-                                        <a href="#">It's a Shame About Ray</a>
-                                    </td>
-                                </tr>
-                                <tr class="haudio">
-                                    <td class="play">
-                                        <a href="#"><span class="resolved">-</span><span class="resolving">.</span><span class="notFound">&nbsp;</span></a>
-                                    </td>
-                                    <td>
-                                        <a href="#" class="fn">It's A Shame About Ray</a>
-                                    </td>
-                                    <td>
-                                        <a href="#">3:07</a>
-                                    </td>
-                                    <td>
-                                        <a href="#" class="contributor">The Lemonheads</a>
-                                    </td>
-                                    <td>
-                                        <a href="#">It's a Shame About Ray</a>
-                                    </td>
-                                </tr>
-                                <tr class="haudio">
-                                    <td class="play">
-                                        <a href="#"><span class="resolved">-</span><span class="resolving">.</span><span class="notFound">&nbsp;</span></a>
-                                    </td>
-                                    <td>
-                                        <a href="#" class="fn">Rudderless</a>
-                                    </td>
-                                    <td>
-                                        <a href="#">3:19</a>
-                                    </td>
-                                    <td>
-                                        <a href="#" class="contributor">The Lemonheads</a>
-                                    </td>
-                                    <td>
-                                        <a href="#">It's a Shame About Ray</a>
-                                    </td>
-                                </tr>
-                                <tr class="haudio">
-                                    <td class="play">
-                                        <a href="#"><span class="resolved">-</span><span class="resolving">.</span><span class="notFound">&nbsp;</span></a>
-                                    </td>
-                                    <td>
-                                        <a href="#" class="fn">My Drug Buddy</a>
-                                    </td>
-                                    <td>
-                                        <a href="#">2:51</a>
-                                    </td>
-                                    <td>
-                                        <a href="#" class="contributor">The Lemonheads</a>
-                                    </td>
-                                    <td>
-                                        <a href="#">It's a Shame About Ray</a>
-                                    </td>
-                                </tr>
-                                <tr class="haudio">
-                                    <td class="play">
-                                        <a href="#"><span class="resolved">-</span><span class="resolving">.</span><span class="notFound">&nbsp;</span></a>
-                                    </td>
-                                    <td>
-                                        <a href="#" class="fn">The Turnpike Down</a>
-                                    </td>
-                                    <td>
-                                        <a href="#">2:33</a>
-                                    </td>
-                                    <td>
-                                        <a href="#" class="contributor">The Lemonheads</a>
-                                    </td>
-                                    <td>
-                                        <a href="#">It's a Shame About Ray</a>
-                                    </td>
-                                </tr>
-                                <tr class="haudio">
-                                    <td class="play">
-                                        <a href="#"><span class="resolved">-</span><span class="resolving">.</span><span class="notFound">&nbsp;</span></a>
-                                    </td>
-                                    <td>
-                                        <a href="#" class="fn">Bit Part</a>
-                                    </td>
-                                    <td>
-                                        <a href="#">1:51</a>
-                                    </td>
-                                    <td>
-                                        <a href="#" class="contributor">The Lemonheads</a>
-                                    </td>
-                                    <td>
-                                        <a href="#">It's a Shame About Ray</a>
-                                    </td>
-                                </tr>
-                                <tr class="haudio">
-                                    <td class="play">
-                                        <a href="#"><span class="resolved">-</span><span class="resolving">.</span><span class="notFound">&nbsp;</span></a>
-                                    </td>
-                                    <td>
-                                        <a href="#" class="fn">Alison's Starting To Happen</a>
-                                    </td>
-                                    <td>
-                                        <a href="#">1:59</a>
-                                    </td>
-                                    <td>
-                                        <a href="#" class="contributor">The Lemonheads</a>
-                                    </td>
-                                    <td>
-                                        <a href="#">It's a Shame About Ray</a>
-                                    </td>
-                                </tr>
-                                <tr class="haudio">
-                                    <td class="play">
-                                        <a href="#"><span class="resolved">-</span><span class="resolving">.</span><span class="notFound">&nbsp;</span></a>
-                                    </td>
-                                    <td>
-                                        <a href="#" class="fn">Hannah &amp; Gabi</a>
-                                    </td>
-                                    <td>
-                                        <a href="#">2:40</a>
-                                    </td>
-                                    <td>
-                                        <a href="#" class="contributor">The Lemonheads</a>
-                                    </td>
-                                    <td>
-                                        <a href="#">It's a Shame About Ray</a>
-                                    </td>
-                                </tr>
-                                <tr class="haudio">
-                                    <td class="play">
-                                        <a href="#"><span class="resolved">-</span><span class="resolving">.</span><span class="notFound">&nbsp;</span></a>
-                                    </td>
-                                    <td>
-                                        <a href="#" class="fn">Kitchen</a>
-                                    </td>
-                                    <td>
-                                        <a href="#">2:54</a>
-                                    </td>
-                                    <td>
-                                        <a href="#" class="contributor">The Lemonheads</a>
-                                    </td>
-                                    <td>
-                                        <a href="#">It's a Shame About Ray</a>
-                                    </td>
-                                </tr>
-                                <tr class="haudio">
-                                    <td class="play">
-                                        <a href="#"><span class="resolved">-</span><span class="resolving">.</span><span class="notFound">&nbsp;</span></a>
-                                    </td>
-                                    <td>
-                                        <a href="#" class="fn">Ceiling Fan In My Spoon</a>
-                                    </td>
-                                    <td>
-                                        <a href="#">1:48</a>
-                                    </td>
-                                    <td>
-                                        <a href="#" class="contributor">The Lemonheads</a>
-                                    </td>
-                                    <td>
-                                        <a href="#">It's a Shame About Ray</a>
-                                    </td>
-                                </tr>
-                                <tr class="haudio">
-                                    <td class="play">
-                                        <a href="#"><span class="resolved">-</span><span class="resolving">.</span><span class="notFound">&nbsp;</span></a>
-                                    </td>
-                                    <td>
-                                        <a href="#" class="fn">Frank Mills</a>
-                                    </td>
-                                    <td>
-                                        <a href="#">1:43</a>
-                                    </td>
-                                    <td>
-                                        <a href="#" class="contributor">The Lemonheads</a>
-                                    </td>
-                                    <td>
-                                        <a href="#">It's a Shame About Ray</a>
-                                    </td>
-                                </tr>
-                                <tr class="haudio">
-                                    <td class="play">
-                                        <a href="#"><span class="resolved">-</span><span class="resolving">.</span><span class="notFound">&nbsp;</span></a>
-                                    </td>
-                                    <td>
-                                        <a href="#" class="fn">Mrs. Robinson</a>
-                                    </td>
-                                    <td>
-                                        <a href="#">3:45</a>
-                                    </td>
-                                    <td>
-                                        <a href="#" class="contributor">The Lemonheads</a>
-                                    </td>
-                                    <td>
-                                        <a href="#">It's a Shame About Ray</a>
-                                    </td>
-                                </tr>
-                                <tr class="haudio">
-                                    <td class="play">
-                                        <a href="#"><span class="resolved">-</span><span class="resolving">.</span><span class="notFound">&nbsp;</span></a>
-                                    </td>
-                                    <td>
-                                        <a href="#" class="fn">Shaky Ground</a>
-                                    </td>
-                                    <td>
-                                        <a href="#">1:48</a>
-                                    </td>
-                                    <td>
-                                        <a href="#" class="contributor">The Lemonheads</a>
-                                    </td>
-                                    <td>
-                                        <a href="#">It's a Shame About Ray</a>
-                                    </td>
-                                </tr>
-                                <tr class="haudio">
-                                    <td class="play">
-                                        <a href="#"><span class="resolved">-</span><span class="resolving">.</span><span class="notFound">&nbsp;</span></a>
-                                    </td>
-                                    <td>
-                                        <a href="#" class="fn">Take Control</a>
-                                    </td>
-                                    <td>
-                                        <a href="#">2:01</a>
-                                    </td>
-                                    <td>
-                                        <a href="#" class="contributor">James Wheare</a>
-                                    </td>
-                                    <td>
-                                        <a href="#">GCSE Composition</a>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                        <div id="tracks">
+                            <table id="trackTable" cellspacing="0" cellpadding="0">
+                                <tbody id="trackTableBody">
+                                </tbody>
+                            </table>
+                        </div>
                     </td>
                 </tr>
             </tbody>
