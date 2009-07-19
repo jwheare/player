@@ -1,19 +1,15 @@
 Page load:
- - display from cache
- - fetch artists (lots of pages)
-   - loading bar (blocking if nothing in cache)
-   - sync with cache locally
-   - update display
+ ✓ fetch artists (lots of pages)
+   ✓ loading bar (blocking)
+   ✓ update display
 
 Click artist:
- - load albums (not many pages) -> cache locally
- - load tracks (a few pages) -> cache locally
- - loading bar
+ ✓ load albums (one page)
+ ✓ load tracks (a couple pages)
+ ✓ loading bar
  
 Click album:
- - load tracks (load from cache / filter by album)
- 
- 
-tracks WS:
-- Merge in album
-- Merge in duration
+ ✓ filter by album
+
+Caching:
+- Cache artist list

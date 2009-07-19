@@ -40,6 +40,7 @@ $('#artistList').click(function (e) {
     target_artist.addClass('selected');
     if (target_artist.size()) {
         PLAYER.fetch_albums(target_artist);
+        PLAYER.fetch_tracks(target_artist);
         target.blur();
         return false;
     }
@@ -53,7 +54,7 @@ $('#albumList').click(function (e) {
     $('#albumList li').removeClass('selected');
     target_album.addClass('selected');
     if (target_album.size()) {
-        PLAYER.fetch_tracks(target_album);
+        PLAYER.filter_tracks(target_album);
         target.blur();
         return false;
     }

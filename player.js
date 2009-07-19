@@ -124,19 +124,16 @@ PLAYER = {
         }, function (json) {
             var response = json.artists;
             // Add the artists to our lookup
-            $.each(response.artist, function (index, artist) {
+            $.each($.makeArray(response.artist), function (index, artist) {
                 // console.log(page+':'+index, artist.name);
-                if (artist.playcount) {
-                    PLAYER.artist_names.push(artist.name);
-                } else {
-                    // console.warn('no plays');
-                }
+                PLAYER.artist_names.push(artist.name);
             });
-            PLAYER.load_artists();
             // Get the other pages
             var next_page = page + 1;
-            if (false && next_page <= response.totalPages) {
+            if (next_page <= 3 /*response.totalPages*/) {
                 PLAYER.get_artist_page(next_page);
+            } else {
+                PLAYER.load_artists();
             }
         });
     },
@@ -163,8 +160,9 @@ PLAYER = {
         $('#albumList').empty();
         $('#chooseAlbum').hide();
         $('#albumsLoading').show();
-        PLAYER.album_lookup = {};
         PLAYER.album_names = [];
+        PLAYER.album_lookup = {};
+        PLAYER.album_id_lookup = {};
         PLAYER.get_album_page(PLAYER.artist_lookup[artist.attr('id')], 1);
     },
     get_album_page: function (artist, page) {
@@ -179,19 +177,16 @@ PLAYER = {
         }, function (json) {
             var response = json.albums;
             // Add the artists to our lookup
-            $.each(response.album, function (index, album) {
+            $.each($.makeArray(response.album), function (index, album) {
                 // console.log(page+':'+index, album.name);
-                if (album.playcount) {
-                    PLAYER.album_names.push(album.name);
-                } else {
-                    // console.warn('no plays');
-                }
+                PLAYER.album_names.push(album.name);
             });
-            PLAYER.load_albums(artist);
             // Get the other pages if we haven't already
             var next_page = page + 1;
             if (next_page <= response.totalPages) {
                 PLAYER.get_album_page(artist, next_page);
+            } else {
+                PLAYER.load_albums(artist);
             }
         });
     },
@@ -217,6 +212,7 @@ PLAYER = {
                 'artist': artist,
                 'album': album
             };
+            PLAYER.album_id_lookup[album] = id;
             list.append(
                 $('<li>').attr('id', id)
                          .append($('<a href="#">').text(album))
@@ -224,15 +220,18 @@ PLAYER = {
         });
     },
     
-    fetch_tracks: function (album) {
+    filter_tracks: function (album) {
+        $('#trackTableBody tr').hide();
+        $('#trackTableBody tr.' + album.attr('id')).show();
+    },
+    fetch_tracks: function (artist) {
         $('#trackTableBody').empty();
         $('#tracksLoading').show();
-        var album_data = PLAYER.album_lookup[album.attr('id')];
         PLAYER.tracks = [];
         PLAYER.track_lookup = {};
-        PLAYER.get_track_page(album_data.artist, album_data.album, 1);
+        PLAYER.get_track_page(PLAYER.artist_lookup[artist.attr('id')], 1);
     },
-    get_track_page: function (artist, album, page) {
+    get_track_page: function (artist, page) {
         var query_params = {
             method: "library.gettracks",
             api_key: PLAYER.lastfm_api_key,
@@ -241,48 +240,55 @@ PLAYER = {
             format: "json",
             page: page
         };
-        if (album) {
-            query_params.album = album;
-        }
-        // console.info('load album page', page);
+        // console.info('load track page', page);
         $.getJSON(PLAYER.lastfm_ws_url + "/2.0/?callback=?", query_params, function (json) {
             var response = json.tracks;
             // Add the artists to our lookup
-            $.each(response.track, function (index, track) {
+            $.each($.makeArray(response.track), function (index, track) {
                 // console.log(page+':'+index, track.name);
-                if (track.playcount) {
-                    PLAYER.tracks.push(track);
-                } else {
-                    // console.warn('no plays');
-                }
+                PLAYER.tracks.push(track);
             });
-            PLAYER.load_tracks(artist, album);
             // Get the other pages if we haven't already
             var next_page = page + 1;
             if (next_page <= response.totalPages) {
                 PLAYER.get_track_page(next_page);
+            } else {
+                PLAYER.load_tracks(artist);
             }
         });
     },
-    // TODO Implement
-    load_tracks: function (artist, album) {
+    
+    load_tracks: function (artist) {
         $('#tracksLoading').hide();
-        // Copy current albums list and sort
+        // Copy current tracks list and sort
         var tracks = $.makeArray(PLAYER.tracks);
-        tracks.sort(function (a, b) {
-            return a.playcount > b.playcount;
-        });
         // Build DOM list
         var tbody = $('#trackTableBody');
+        var id, trow, duration_link, album_link, album_class;
         $.each(tracks, function (index, track) {
-            var id = 'track_' + index;
+            id = 'track_' + index;
             PLAYER.track_lookup[id] = track;
-            var trow = $('<tr class="haudio">')
+            duration_link = $('<a href="#">');
+            if (track.duration-0) {
+                duration_link.text(Playdar.Util.mmss(track.duration/1000));
+            } else {
+                duration_link.html('&nbsp;');
+            }
+            album_link = $('<a href="#">');
+            album_class = 'album_all ';
+            if (track.album && track.album.name) {
+                album_link.text(track.album.name);
+                album_class += PLAYER.album_id_lookup[track.album.name];
+            } else {
+                album_link.html('&nbsp;');
+            }
+            trow = $('<tr class="haudio">')
+                .addClass(album_class)
                 .append('<td class="play"><a href="#"><span class="resolved">-</span><span class="resolving">.</span><span class="notFound">&nbsp;</span></a></td>')
                 .append($('<td>').append($('<a href="#" class="fn">').text(track.name)))
-                .append($('<td>').append($('<a href="#">').text('N/A')))
+                .append($('<td>').append(duration_link))
                 .append($('<td>').append($('<a href="#" class="contributor">').text(track.artist.name)))
-                .append($('<td>').append($('<a href="#">').text(album || 'N/A')));
+                .append($('<td>').append(album_link));
             tbody.append(trow);
         });
         Playdar.client.autodetect(PLAYER.track_handler);
