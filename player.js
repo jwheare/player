@@ -72,7 +72,7 @@ PLAYER = {
     highlight_result_source: function (result) {
         // console.dir(result);
         // Highligh the IP source that provided this result
-        var ip_match = result.url.match(/^http:\/\/(.*):/);
+        var ip_match = result.url.match(/^http:\/\/(.*)\//);
         if (ip_match) {
             var ip = ip_match[1];
             var source = PLAYER.get_source(ip);
@@ -84,7 +84,7 @@ PLAYER = {
         // Highligh the local source that provided this result
         var local_match = result.url.match(/^file:\/\/\//);
         if (local_match) {
-            var host = "[local]";
+            var host = Playdar.SERVER_ROOT + ":" + Playdar.SERVER_PORT;
             var source = PLAYER.get_source(host);
             if (!source.size()) {
                 source = PLAYER.add_lan_source(host);
@@ -343,7 +343,7 @@ PLAYER = {
     },
     add_lan_source: function (ip) {
         var source_link = $('<a>')
-            .text(ip)
+            .text(ip.split(':')[0])
             .attr('title', ip)
             .attr('href', 'http://' + ip);
         source_link.addClass('online');
