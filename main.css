@@ -16,15 +16,15 @@ table#browser tr {
     vertical-align: top;
 }
 
-td#contactCell {
+td#sourceCell {
     border-right: 1px solid #ddd;
 }
-div#contacts {
+div#sources {
     width: 150px;
     margin: 0;
     padding: 0;
 }
-div#contacts h2 {
+div#sources h2 {
     margin: 0;
     padding: 4px;
     color: #fff;
@@ -32,35 +32,36 @@ div#contacts h2 {
     font: normal 11px "Lucida Grande";
     font-weight: bold;
 }
-div#contacts p {
+div#sources p {
     margin: 0;
     padding: 3px;
 }
-div#contacts ul {
+div#sources ul {
     margin: 0;
     padding: 0;
     list-style: none;
 }
-div#contacts li {
+div#sources li {
     margin: 0;
     padding: 0;
 }
-div#contacts li a {
+div#sources li a {
     padding: 3px;
     color: #bbb;
     background: #fff;
     overflow: hidden;
+    white-space: nowrap;
 }
-div#contacts li a.online {
+div#sources li a.online {
     font-weight: bold;
 }
-div#contacts li a.playdar {
+div#sources li a.playdar {
     color: #000;
 }
-div#contacts li:nth-child(odd) a {
+div#sources li:nth-child(odd) a {
     background: #EBFBFF;
 }
-div#contacts li a:hover {
+div#sources li a:hover {
     background: #EAEAEA;
 }
 

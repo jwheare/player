@@ -69,6 +69,32 @@ PLAYER = {
         return track;
     },
     
+    highlight_result_source: function (result) {
+        // Highlight the jabber source that provided this result
+        // console.dir(result);
+        var jid_match = result.url.match(/greynet:\/\/(.*)\//);
+        if (jid_match) {
+            var jid = jid_match[1];
+            var contact = PLAYER.get_source(jid);
+            if (!contact.size()) {
+                contact = PLAYER.add_contact({
+                    jid: jid
+                }, true);
+            }
+            PLAYER.highlight_source(contact);
+        }
+        // Highligh the IP source that provided this result
+        var ip_match = result.url.match(/http:\/\/(.*):/);
+        if (ip_match) {
+            var ip = ip_match[1];
+            var source = PLAYER.get_source(ip);
+            if (!source.size()) {
+                source = PLAYER.add_lan_source(ip);
+            }
+            PLAYER.highlight_source(source);
+        }
+    },
+    
     results_handler: function (response, final_answer) {
         // Don't do anything till we're done
         if (!final_answer) {
@@ -83,11 +109,7 @@ PLAYER = {
             var result = response.results[0];
             // Register stream on perfect match only
             if (result.score == 1) {
-                // Highlight the contact in the roster that provided this result
-                var jid_match = result.url.match(/greynet:\/\/(.*)\//);
-                if (jid_match) {
-                    PLAYER.highlight_contact(jid_match[1]);
-                }
+                PLAYER.highlight_result_source(result);
                 className = 'resolved';
                 var sid = result.sid;
                 track.data('sid', sid);
@@ -309,33 +331,51 @@ PLAYER = {
         var url = Playdar.client.get_base_url('/greynet/get_roster', query_params);
         Playdar.Util.loadjs(url);
     },
-    roster_callback: function (json) {
-        var playdar, res, list_item;
-        $('#contactLoading').hide();
-        $.each(json, function (i, contact) {
-            playdar = false;
-            for (res in contact.resources) {
+    add_lan_source: function (ip) {
+        var source_link = $('<a>')
+            .text(ip)
+            .attr('title', ip)
+            .attr('href', 'http://' + ip);
+        source_link.addClass('online');
+        source_link.addClass('playdar');
+        $('#sourceList').append($('<li>').append(source_link));
+        source_link.data('originalBG', source_link.css('backgroundColor'));
+        return source_link;
+    },
+    add_contact: function (contact, force) {
+        var playdar = force || false;
+        if (!playdar && contact.resources) {
+            for (var res in contact.resources) {
                 if (contact.resources[res].message == "Daemon not human.") {
                     playdar = true;
                 }
             }
-            contact_link = $('<a>')
-                .text(contact.name || contact.jid)
-                .attr('title', contact.jid)
-                .attr('href', 'jabber://' + contact.jid);
-            if (contact.online) {
-                contact_link.addClass('online');
-            }
-            if (playdar) {
-                contact_link.addClass('playdar');
-            }
-            $('#contactList').append($('<li>').append(contact_link));
-            contact_link.data('originalBG', contact_link.css('backgroundColor'));
+        }
+        var contact_link = $('<a>')
+            .text(contact.jid)
+            .attr('title', contact.jid)
+            .attr('href', 'jabber://' + contact.jid);
+        if (force || contact.online) {
+            contact_link.addClass('online');
+        }
+        if (playdar) {
+            contact_link.addClass('playdar');
+        }
+        $('#sourceList').append($('<li>').append(contact_link));
+        contact_link.data('originalBG', contact_link.css('backgroundColor'));
+        return contact_link;
+    },
+    roster_callback: function (json) {
+        $('#sourceLoading').hide();
+        $.each(json, function (i, contact) {
+            PLAYER.add_contact(contact);
         });
     },
-    highlight_contact: function (jid) {
-        var contact = $('#contactList a[title='+jid+']');
-        contact.animate({ backgroundColor: '#e8f9bb' }, 200)
-               .animate({ backgroundColor: contact.data('originalBG') }, 200);
+    get_source: function (title) {
+        return $('#sourceList a[title='+title+']');
+    },
+    highlight_source: function (source) {
+        source.animate({ backgroundColor: '#c0e95b' }, 100)
+              .animate({ backgroundColor: source.data('originalBG') }, 50);
     }
 };
