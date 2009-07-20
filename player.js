@@ -1,6 +1,8 @@
 PLAYER = {
     lastfm_api_key: "b25b959554ed76058ac220b7b2e0a026",
     lastfm_ws_url: "http://james.ws.dev.last.fm",
+    // lastfm_ws_url: "http://james.ws.staging.last.fm",
+    // lastfm_ws_url: "http://wsdev.audioscrobbler.com",
     // lastfm_ws_url: "http://ws.audioscrobbler.com",
     lastfm_username: "jwheare",
     
@@ -81,6 +83,11 @@ PLAYER = {
             var result = response.results[0];
             // Register stream on perfect match only
             if (result.score == 1) {
+                // Highlight the contact in the roster that provided this result
+                var jid_match = result.url.match(/greynet:\/\/(.*)\//);
+                if (jid_match) {
+                    PLAYER.highlight_contact(jid_match[1]);
+                }
                 className = 'resolved';
                 var sid = result.sid;
                 track.data('sid', sid);
@@ -294,6 +301,14 @@ PLAYER = {
         Playdar.client.autodetect(PLAYER.track_handler);
     },
     
+    load_roster: function () {
+        var query_params = Playdar.client.add_auth_token({
+            call_id: new Date().getTime(),
+            jsonp: 'PLAYER.roster_callback'
+        });
+        var url = Playdar.client.get_base_url('/greynet/get_roster', query_params);
+        Playdar.Util.loadjs(url);
+    },
     roster_callback: function (json) {
         var playdar, res, list_item;
         $('#contactLoading').hide();
@@ -315,14 +330,12 @@ PLAYER = {
                 contact_link.addClass('playdar');
             }
             $('#contactList').append($('<li>').append(contact_link));
+            contact_link.data('originalBG', contact_link.css('backgroundColor'));
         });
     },
-    load_roster: function () {
-        var query_params = Playdar.client.add_auth_token({
-            call_id: new Date().getTime(),
-            jsonp: 'PLAYER.roster_callback'
-        });
-        var url = Playdar.client.get_base_url('/greynet/get_roster', query_params);
-        Playdar.Util.loadjs(url);
+    highlight_contact: function (jid) {
+        var contact = $('#contactList a[title='+jid+']');
+        contact.animate({ backgroundColor: '#e8f9bb' }, 200)
+               .animate({ backgroundColor: contact.data('originalBG') }, 200);
     }
 };
