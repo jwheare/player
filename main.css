@@ -48,6 +48,7 @@ div#contacts li {
 div#contacts li a {
     padding: 3px;
     color: #bbb;
+    background: #fff;
     overflow: hidden;
 }
 div#contacts li a.online {
