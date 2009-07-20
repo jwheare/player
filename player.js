@@ -70,9 +70,29 @@ PLAYER = {
     },
     
     highlight_result_source: function (result) {
-        // Highlight the jabber source that provided this result
         // console.dir(result);
-        var jid_match = result.url.match(/greynet:\/\/(.*)\//);
+        // Highligh the IP source that provided this result
+        var ip_match = result.url.match(/^http:\/\/(.*):/);
+        if (ip_match) {
+            var ip = ip_match[1];
+            var source = PLAYER.get_source(ip);
+            if (!source.size()) {
+                source = PLAYER.add_lan_source(ip);
+            }
+            PLAYER.highlight_source(source);
+        }
+        // Highligh the local source that provided this result
+        var local_match = result.url.match(/^file:\/\/\//);
+        if (local_match) {
+            var host = "[local]";
+            var source = PLAYER.get_source(host);
+            if (!source.size()) {
+                source = PLAYER.add_lan_source(host);
+            }
+            PLAYER.highlight_source(source);
+        }
+        // Highlight the jabber source that provided this result
+        var jid_match = result.url.match(/^greynet:\/\/(.*)\//);
         if (jid_match) {
             var jid = jid_match[1];
             var contact = PLAYER.get_source(jid);
@@ -82,16 +102,6 @@ PLAYER = {
                 }, true);
             }
             PLAYER.highlight_source(contact);
-        }
-        // Highligh the IP source that provided this result
-        var ip_match = result.url.match(/http:\/\/(.*):/);
-        if (ip_match) {
-            var ip = ip_match[1];
-            var source = PLAYER.get_source(ip);
-            if (!source.size()) {
-                source = PLAYER.add_lan_source(ip);
-            }
-            PLAYER.highlight_source(source);
         }
     },
     
