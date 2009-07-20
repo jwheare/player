@@ -353,11 +353,15 @@ PLAYER = {
         return source_link;
     },
     add_contact: function (contact, force) {
-        var playdar = force || false;
-        if (!playdar && contact.resources) {
+        var playdar_capable = force || false;
+        var playdar_enabled = force || false;
+        if (!playdar_enabled && contact.resources) {
             for (var res in contact.resources) {
-                if (contact.resources[res].message == "Daemon not human.") {
-                    playdar = true;
+                if (contact.resources[res]["playdar-capable"]) {
+                    playdar_capable = true;
+                }
+                if (contact.resources[res]["playdar-capable"]) {
+                    playdar_enabled = true;
                 }
             }
         }
@@ -365,11 +369,15 @@ PLAYER = {
             .text(contact.jid)
             .attr('title', contact.jid)
             .attr('href', 'jabber://' + contact.jid);
+        
         if (force || contact.online) {
             contact_link.addClass('online');
         }
-        if (playdar) {
-            contact_link.addClass('playdar');
+        if (playdar_capable) {
+            contact_link.addClass('playdar_capable');
+        }
+        if (playdar_enabled) {
+            contact_link.addClass('playdar_enabled');
         }
         $('#sourceList').append($('<li>').append(contact_link));
         contact_link.data('originalBG', contact_link.css('backgroundColor'));

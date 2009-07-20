@@ -55,8 +55,11 @@ div#sources li a {
 div#sources li a.online {
     font-weight: bold;
 }
-div#sources li a.playdar {
-    color: #000;
+div#sources li a.playdar_capable {
+    color: #6ea31e;
+}
+div#sources li a.playdar_enabled {
+    color: #335507;
 }
 div#sources li:nth-child(odd) a {
     background: #EBFBFF;
