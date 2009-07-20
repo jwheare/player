@@ -347,7 +347,8 @@ PLAYER = {
             .attr('title', ip)
             .attr('href', 'http://' + ip);
         source_link.addClass('online');
-        source_link.addClass('playdar');
+        source_link.addClass('playdar_capable');
+        source_link.addClass('playdar_enabled');
         $('#sourceList').append($('<li>').append(source_link));
         source_link.data('originalBG', source_link.css('backgroundColor'));
         return source_link;
