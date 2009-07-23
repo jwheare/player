@@ -1,4 +1,4 @@
-Playdar.REFRESH_INTERVAL = 100;
+Playdar.REFRESH_INTERVAL = 500;
 Playdar.MAX_CONCURRENT_RESOLUTIONS = 10;
 
 Playdar.setup(PLAYER.auth_details);
