@@ -136,7 +136,9 @@ div.progress {
 }
 #tracks {
     position: relative;
+    overflow: auto;
     min-height: 20px;
+    max-height: 400px;
 }
 #tracksLoading {
     display: none;

@@ -4,7 +4,7 @@ PLAYER = {
     // lastfm_ws_url: "http://james.ws.staging.last.fm",
     // lastfm_ws_url: "http://wsdev.audioscrobbler.com",
     lastfm_ws_url: "http://ws.audioscrobbler.com",
-    lastfm_username: "rj",
+    lastfm_username: "jwheare",
     
     auth_details: {
         name: "Media Player",
