@@ -1,10 +1,10 @@
 PLAYER = {
     lastfm_api_key: "b25b959554ed76058ac220b7b2e0a026",
-    lastfm_ws_url: "http://james.ws.dev.last.fm",
+    // lastfm_ws_url: "http://james.ws.dev.last.fm",
     // lastfm_ws_url: "http://james.ws.staging.last.fm",
     // lastfm_ws_url: "http://wsdev.audioscrobbler.com",
-    // lastfm_ws_url: "http://ws.audioscrobbler.com",
-    lastfm_username: "jwheare",
+    lastfm_ws_url: "http://ws.audioscrobbler.com",
+    lastfm_username: "rj",
     
     auth_details: {
         name: "Media Player",
@@ -13,8 +13,26 @@ PLAYER = {
     },
     q_tracks: {},
     s_tracks: {},
-    onResultPlay: function () {
-        PLAYER.onResultResume.call(this);
+    
+    
+    // Not called when served from cache
+    onResultLoad: function () {
+        var track_item = PLAYER.s_tracks[this.sID];
+        if (track_item) {
+            if (this.readyState == 2) { // failed/error
+                // Switch track highlight in the playlist
+                PLAYER.resetResult.call(this);
+                track_item.addClass('error');
+            }
+        }
+        return track_item;
+    },
+    onResultStart: function () {
+        var track_item = PLAYER.onResultPlay.call(this);
+        if (track_item) {
+            // Update the now playing track
+            PLAYER.now_playing = this.sID;
+        }
     },
     onResultPause: function () {
         var track_item = PLAYER.s_tracks[this.sID];
@@ -23,26 +41,49 @@ PLAYER = {
             track_item.removeClass('playing');
             track_item.addClass('paused');
         }
+        return track_item;
     },
-    onResultResume: function () {
+    onResultPlay: function () {
         var track_item = PLAYER.s_tracks[this.sID];
         if (track_item) {
             // Highlight the track in the playlist
             track_item.removeClass('paused');
+            track_item.removeClass('error');
             track_item.addClass('playing');
         }
+        return track_item;
     },
-    onResultStop: function () {
+    resetResult: function () {
         var track_item = PLAYER.s_tracks[this.sID];
         if (track_item) {
             // Remove track highlight in the playlist
             track_item.removeClass('playing');
+        }
+        return track_item;
+    },
+    onResultStop: function () {
+        var track_item = PLAYER.resetResult.call(this);
+        if (track_item) {
             track_item.removeClass('paused');
         }
+        // Clear the now playing track
+        PLAYER.now_playing = null;
         Playdar.player.stop_current();
+        return track_item;
     },
     onResultFinish: function () {
-        PLAYER.onResultStop.call(this);
+        var track_item = PLAYER.onResultStop.call(this);
+        // Chain playback to the next perfect match
+        if (track_item) {
+            var next_playlist_track = track_item.nextAll('tr.resolved').data('sid');
+            if (next_playlist_track) {
+                PLAYER.play_track(next_playlist_track);
+                return true;
+            }
+        }
+        // Otherwise hard stop play session
+        Playdar.player.stop_current(true);
+        return track_item;
     },
     
     /**
@@ -125,9 +166,11 @@ PLAYER = {
                 track.data('sid', sid);
                 PLAYER.s_tracks[sid] = track;
                 Playdar.player.register_stream(result, {
-                    onplay: PLAYER.onResultPlay,
+                    chained: true,
+                    onload: PLAYER.onResultLoad,
+                    onplay: PLAYER.onResultStart,
                     onpause: PLAYER.onResultPause,
-                    onresume: PLAYER.onResultResume,
+                    onresume: PLAYER.onResultPlay,
                     onstop: PLAYER.onResultStop,
                     onfinish: PLAYER.onResultFinish
                 });
@@ -137,9 +180,8 @@ PLAYER = {
         track.removeClass('resolving').addClass(className);
     },
     
-    play_track: function (track) {
+    play_track: function (sid) {
         // Find an SID class and play stream
-        var sid = track.data('sid');
         if (sid) {
             Playdar.player.play_stream(sid);
             return true;
@@ -169,7 +211,7 @@ PLAYER = {
             });
             // Get the other pages
             var next_page = page + 1;
-            if (next_page <= 3 /*response.totalPages*/) {
+            if (next_page <= 5 /*response.totalPages*/) {
                 PLAYER.get_artist_page(next_page);
             } else {
                 PLAYER.load_artists();
@@ -387,5 +429,27 @@ PLAYER = {
     highlight_source: function (source) {
         source.animate({ backgroundColor: '#c0e95b' }, 100)
               .animate({ backgroundColor: source.data('originalBG') }, 50);
+    },
+    toggle_pause_current: function () {
+        var current_track = PLAYER.now_playing;
+        if (!current_track) {
+            // Get the first perfect match
+            current_track = $('#trackTableBody tr.resolved').data('sid');
+        }
+        PLAYER.play_track(current_track);
+    },
+    play_next_track: function () {
+        var current_track = PLAYER.s_tracks[PLAYER.now_playing];
+        if (current_track) {
+            var next_track = current_track.nextAll('tr.resolved').data('sid');
+            PLAYER.play_track(next_track);
+        }
+    },
+    play_previous_track: function () {
+        var current_track = PLAYER.s_tracks[PLAYER.now_playing];
+        if (current_track) {
+            var previous_track = current_track.prevAll('tr.resolved').data('sid');
+            PLAYER.play_track(previous_track);
+        }
     }
 };

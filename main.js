@@ -25,8 +25,9 @@ $('#tracks').click(function (e) {
     var target = $(e.target);
     var target_track = target.closest('tr.haudio');
     if (target_track.size()) {
-        PLAYER.play_track(target_track);
+        e.preventDefault();
         target.blur();
+        PLAYER.play_track(target_track.data('sid'));
         return false;
     }
 });
@@ -39,9 +40,10 @@ $('#artistList').click(function (e) {
     $('#artistList li').removeClass('selected');
     target_artist.addClass('selected');
     if (target_artist.size()) {
+        e.preventDefault();
+        target.blur();
         PLAYER.fetch_albums(target_artist);
         PLAYER.fetch_tracks(target_artist);
-        target.blur();
         return false;
     }
 });
@@ -54,8 +56,40 @@ $('#albumList').click(function (e) {
     $('#albumList li').removeClass('selected');
     target_album.addClass('selected');
     if (target_album.size()) {
-        PLAYER.filter_tracks(target_album);
+        e.preventDefault();
         target.blur();
+        PLAYER.filter_tracks(target_album);
         return false;
+    }
+});
+
+/**
+ * Keyboard shortcuts
+**/
+$(document).keydown(function (e) {
+    var target = $(e.target);
+    // Don't capture on keyboardable inputs
+    if (target.is('input[type=text], textarea, select')) {
+        return true;
+    }
+    // Don't capture with any modifiers
+    if (e.metaKey || e.shiftKey || e.altKey || e.ctrlKey) {
+        return true;
+    }
+    switch (e.keyCode) {
+    case 80: // p
+        e.preventDefault();
+        PLAYER.toggle_pause_current();
+        break;
+    case 219: // [
+        // Back a track
+        e.preventDefault();
+        PLAYER.play_previous_track();
+        break;
+    case 221: // ]
+        // Skip track
+        e.preventDefault();
+        PLAYER.play_next_track();
+        break;
     }
 });
