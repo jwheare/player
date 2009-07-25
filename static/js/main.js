@@ -26,10 +26,13 @@ $('#import').submit(function (e) {
     if (params.username) {
         // Reset the last.fm user cookie and load
         PLAYER.setLastfmUserCookie(params.username);
-        // Add a hash to track username changes
+        // Add a hash to track username changes, delegate to the hash listener
+        // to update the username and load their library
+        PLAYER.lastfm_username = null;
         PLAYER.setHashParts({
             username: params.username
         });
+        PLAYER.switchToPlayer();
     }
 });
 

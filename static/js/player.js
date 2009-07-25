@@ -82,7 +82,11 @@ PLAYER = {
     },
     // Redirect to a proper URL
     redirectToLastfmUser: function (username) {
-        window.location = '/' + username;
+        if (username) {
+            window.location = '/' + username;
+        } else {
+            window.location = '/';
+        }
     },
     
     /* Cookies */
@@ -101,8 +105,8 @@ PLAYER = {
     },
     clearLastfmUserCookie: function () {
         Playdar.Util.deletecookie(PLAYER.lastfm_user_cookie);
-        // Refresh
-        window.location = window.location;
+        // Refresh to current user's library
+        PLAYER.redirectToLastfmUser(PLAYER.lastfm_username);
     },
     
     /* Mode switching */
