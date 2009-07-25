@@ -101,7 +101,7 @@ PLAYER = {
         return username;
     },
     setLastfmUserCookie: function (username) {
-        Playdar.Util.setcookie(PLAYER.lastfm_user_cookie, username);
+        Playdar.Util.setcookie(PLAYER.lastfm_user_cookie, username, 365);
         $('#clearCookies').text("Clear cookie: ‘"+username+"’").show();
     },
     clearLastfmUserCookie: function () {
