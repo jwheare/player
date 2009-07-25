@@ -10,7 +10,7 @@ Playdar.client.register_listeners({
 });
 Playdar.client.register_results_handler(PLAYER.results_handler);
 
-soundManager.url = 'soundmanager2_flash9.swf';
+soundManager.url = '/static/swf/soundmanager2_flash9.swf';
 soundManager.flashVersion = 9;
 soundManager.onload = function () {
     Playdar.setup_player(soundManager);
@@ -22,10 +22,14 @@ soundManager.onload = function () {
 // Handle last.fm import form
 $('#import').submit(function (e) {
     e.preventDefault();
-    var params = PLAYER.serialize_form(this);
+    var params = PLAYER.Util.serialize_form(this);
     if (params.username) {
-        // Clear the inputs and refocus
-        PLAYER.setLastfmUser(params.username);
+        // Reset the last.fm user cookie and load
+        PLAYER.setLastfmUserCookie(params.username);
+        // Add a hash to track username changes
+        PLAYER.setHashParts({
+            username: params.username
+        });
     }
 });
 
@@ -33,6 +37,12 @@ $('#import').submit(function (e) {
 $('.importCancel').click(function (e) {
     e.preventDefault();
     PLAYER.switchToPlayer();
+});
+
+// Handle clear cookie click
+$('#clearCookies').click(function (e) {
+    e.preventDefault();
+    PLAYER.clearLastfmUserCookie();
 });
 
 // Handle switch accounts click

@@ -90,8 +90,9 @@ div#statusHead a:hover {
 div#statusHead small {
     font-size: 11px;
 }
-div#statusHead a#lastfmSwitch {
-/*    float: right;*/
+div#statusHead a#clearCookies {
+    display: none;
+    float: right;
 }
 div#statusHead a#lastfmUser {
 }

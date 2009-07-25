@@ -3,17 +3,18 @@
 <head>
     <meta http-equiv="Content-type" content="text/html; charset=utf-8">
     <title>Media Player</title>
-    <link rel="stylesheet" href="main.css" type="text/css" media="screen">
+    <link rel="stylesheet" href="/static/css/main.css" type="text/css" media="screen">
 </head>
 <body>
     <div id="container">
         <div id="statusHead">
+            <a href="#" id="clearCookies" title="Delete your username cookie on this site">Clear cookie</a>
             <img src="http://cdn.last.fm/flatness/favicon.2.ico" width="16" height="16">
-            Last.fm account:
+            Last.fm library:
             <a href="#" id="lastfmUser"><span></span></a>
             <small>
                 -
-                <a href="#" id="lastfmSwitch">Switch accounts</a>
+                <a href="#" id="lastfmSwitch">Change</a>
                 <a href="#" id="lastfmSwitchCancel" class="importCancel">Back to player</a>
             </small>
         </div>
@@ -21,19 +22,19 @@
         <div id="landing">
             <form action="" id="import">
                 <p>
-                    <label for="importUsername">Import your library from Last.fm</label>
+                    <label for="importUsername">Type in your Last.fm username:</label>
                 </p>
                 <p>
                     <img src="http://cdn.last.fm/flatness/favicon.2.ico" width="16" height="16" class="bullet">
                     <input type="text" name="username" id="importUsername" size="35">
-                    <input type="submit" value="Import">
+                    <input type="submit" value="Browse library">
                 </p>
             </form>
             <a href="#" class="importCancel">Cancel</a>
             <ul id="benefits">
                 <li>Browse your library as a media player.</li>
                 <li>Play back tracks you already own with <a href="http://www.playdar.org/">Playdar</a>.</li>
-                <li>Your library will be imported from the <a href="http://www.last.fm/api">Last.fm API</a> and your username stored in a cookie.</li>
+                <li>Your library data will be imported from the <a href="http://www.last.fm/api">Last.fm API</a> and your username stored in a cookie.</li>
             </ul>
         </div>
         
@@ -61,7 +62,7 @@
                             <div id="artists">
                                 <ol id="artistList"></ol>
                                 <div id="artistsLoading" class="progress">
-                                    <img src="/progress.gif" width="220" height="19" />
+                                    <img src="/static/img/progress.gif" width="220" height="19" />
                                 </div>
                             </div>
                         </td>
@@ -70,7 +71,7 @@
                                 <ol id="albumList"></ol>
                                 <p id="chooseAlbum">Choose an artist</p>
                                 <div id="albumsLoading" class="progress">
-                                    <img src="/progress.gif" width="220" height="19" />
+                                    <img src="/static/img/progress.gif" width="220" height="19" />
                                 </div>
                             </div>
                         </td>
@@ -102,7 +103,7 @@
                                     </tbody>
                                 </table>
                                 <div id="tracksLoading" class="progress">
-                                    <img src="/progress.gif" width="220" height="19" />
+                                    <img src="/static/img/progress.gif" width="220" height="19" />
                                 </div>
                             </div>
                         </td>
@@ -113,10 +114,10 @@
         <!-- <p id="footer"><a href="http://github.com/jwheare/player/tree">Code on Github</a> | Made by <a href="http://james.wheare.org/">James Wheare</a> | Work in Progress. Mostly a UI concept for now.</p> -->
     </div>
     
-    <script type="text/javascript" src="jquery.js"></script>
-    <script type="text/javascript" src="jquery.color.js"></script>
-    <script type="text/javascript" src="playdar.js"></script>
-    <script type="text/javascript" src="player.js"></script>
-    <script type="text/javascript" src="soundmanager2-nodebug-jsmin.js"></script>
-    <script type="text/javascript" src="main.js"></script>
+    <script type="text/javascript" src="/static/js/lib/jquery.js"></script>
+    <script type="text/javascript" src="/static/js/lib/jquery.color.js"></script>
+    <script type="text/javascript" src="/static/js/lib/playdar.js"></script>
+    <script type="text/javascript" src="/static/js/player.js"></script>
+    <script type="text/javascript" src="/static/js/lib/soundmanager2-nodebug-jsmin.js"></script>
+    <script type="text/javascript" src="/static/js/main.js"></script>
 </body>
