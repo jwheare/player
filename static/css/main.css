@@ -1,6 +1,6 @@
 body {
     margin: 0;
-    padding: 0 10px;
+    padding: 0 10px 10px 10px;
 }
 a {
     color: #1B2E99;
@@ -255,6 +255,8 @@ div.progress {
 }
 table#trackTable {
     width: 100%;
+}
+tbody#trackTableBody {
 }
 tbody#trackTableBody a {
     color: #666;

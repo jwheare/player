@@ -242,6 +242,7 @@ PLAYER = {
         // All link
         list.append(
             $('<li>').attr('id', 'album_all')
+                     .addClass('selected')
                      .append($('<a href="#">').text('All'))
         );
         PLAYER.album_lookup['album_all'] = {
