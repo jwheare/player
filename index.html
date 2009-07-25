@@ -21,17 +21,20 @@
         <div id="landing">
             <form action="" id="import">
                 <p>
-                    <label for="importUsername">
-                        <img src="http://cdn.last.fm/flatness/favicon.2.ico" width="16" height="16">
-                        Import your library from Last.fm
-                    </label>
+                    <label for="importUsername">Import your library from Last.fm</label>
                 </p>
                 <p>
+                    <img src="http://cdn.last.fm/flatness/favicon.2.ico" width="16" height="16" class="bullet">
                     <input type="text" name="username" id="importUsername" size="35">
-                    <input type="submit" value="Need input">
+                    <input type="submit" value="Import">
                 </p>
             </form>
             <a href="#" class="importCancel">Cancel</a>
+            <ul id="benefits">
+                <li>Browse your library as a media player.</li>
+                <li>Play back tracks you already own with <a href="http://www.playdar.org/">Playdar</a>.</li>
+                <li>Your library will be imported from the <a href="http://www.last.fm/api">Last.fm API</a> and your username stored in a cookie.</li>
+            </ul>
         </div>
         
         <div id="player">
