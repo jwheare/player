@@ -1,36 +1,124 @@
+body {
+    margin: 0;
+    padding: 0 10px;
+}
+a {
+    color: #1B2E99;
+}
+a:hover {
+    color: #2647FF;
+}
+
 div#container {
     min-width: 500px;
     font: normal 11px "Lucida Grande";
 }
+
+/* Landing */
+div#landing {
+    display: none;
+    position: relative;
+    width: 600px;
+    margin: 100px auto;
+    padding: 50px;
+    background: #D5DBD5;
+    font: normal 30px "Georgia";
+}
+div#landing a.importCancel {
+    display: none;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 20px;
+}
+form#import {
+    line-height: 30px;
+}
+form#import p {
+    margin: 0 0 15px 0;
+    padding: 0;
+}
+form#import input {
+    padding: 4px;
+    font: normal 20px "Georgia";
+}
+form#import input[type=text] {
+    font-family: "Arial";
+    letter-spacing: 0.02em;
+}
+
+/* Player */
+div#player {
+    opacity: 0;
+    display: none;
+}
+
+/* Status head */
+div#statusHead {
+    display: none;
+    height: 16px;
+    padding: 5px;
+    background: #D5DBD5;
+    font-size: 12px;
+    line-height: 17px;
+}
+div#statusHead a {
+    text-decoration: none;
+}
+div#statusHead a:hover {
+    text-decoration: underline;
+}
+div#statusHead small {
+    font-size: 11px;
+}
+div#statusHead a#lastfmSwitch {
+/*    float: right;*/
+}
+div#statusHead a#lastfmUser {
+}
+div#statusHead img {
+    margin-right: 5px;
+    float: left;
+}
+
+/* Footer */
+p#footer {
+    
+}
+
+/* Browser */
 table#browser {
     width: 100%;
-    border: 1px solid #bbb;
+    border: 1px solid #aaa;
 }
 table#browser a {
     display: block;
-    padding: 4px;
+    padding: 3px;
     text-decoration: none;
-    color: #666;
+    color: #222;
 }
 table#browser tr {
     vertical-align: top;
 }
 
+/* Sources */
 td#sourceCell {
-    border-right: 1px solid #ddd;
+/*    border-right: 1px solid #ddd;*/
 }
 div#sources {
+    opacity: 0;
+    display: none;
     width: 150px;
     margin: 0;
     padding: 0;
 }
 div#sources h2 {
     margin: 0;
-    padding: 4px;
+    padding: 3px;
     color: #fff;
-    background: #bbb;
+    background: #aaa;
     font: normal 11px "Lucida Grande";
-    font-weight: bold;
+    font-weight: normal;
 }
 div#sources p {
     margin: 0;
@@ -47,7 +135,7 @@ div#sources li {
 }
 div#sources li a {
     padding: 3px;
-    color: #bbb;
+    color: #aaa;
     background: #fff;
     overflow: hidden;
     white-space: nowrap;
@@ -65,9 +153,10 @@ div#sources li:nth-child(odd) a {
     background: #EBFBFF;
 }
 div#sources li a:hover {
-    background: #EAEAEA;
+/*    background: #EAEAEA;*/
 }
 
+/* Pane lists */
 table#browser td.pane ol {
     height: 200px;
     overflow: auto;
@@ -75,11 +164,12 @@ table#browser td.pane ol {
     padding: 0;
 }
 table#browser th {
+    font-weight: normal;
     text-align: left;
 }
 table#browser th a {
     color: #fff;
-    background: #bbb;
+    background: #aaa;
 }
 table#browser td.pane li {
     margin: 0;
@@ -91,16 +181,16 @@ table#browser td.pane li:nth-child(odd) a {
     background: #EBFBFF;
 }
 table#browser td.pane li.selected a {
-    background: #C0ECFF;
-    color: #222;
+    background: #0068FF;
+    color: #FFF;
 }
 table#browser td.pane td a:hover,
 table#browser td.pane ol a:hover {
-    background: #EAEAEA;
+/*    background: #EAEAEA;*/
 }
 #artistPane {
     width: 50%;
-    border-right: 1px solid #bbb;
+    border-right: 1px solid #aaa;
 }
 #artists {
     position: relative;
@@ -127,24 +217,28 @@ div.progress {
     width: 100%;
     margin-top: -15px;
     text-align: center;
-    font-size: 18px;
+    font: normal 20px "Georgia";
     height: 30px;
 }
 #trackPane {
-    border-top: 1px solid #bbb;
+    border-top: 1px solid #aaa;
     width: 50%;
 }
 #tracks {
     position: relative;
     overflow: auto;
-    min-height: 20px;
+    min-height: 42px;
     max-height: 400px;
 }
 #tracksLoading {
     display: none;
+    margin-top: 1px;
 }
 table#trackTable {
     width: 100%;
+}
+tbody#trackTableBody a {
+    color: #666;
 }
 table#trackTable td,
 table#trackTable th,
@@ -152,35 +246,40 @@ table#trackTable th,
     position: relative;
     border-left: 1px solid #ddd;
 }
-table#trackTable tr:hover td a {
-    background: #EAEAEA;
+tbody#trackTableBody tr:hover td a {
+/*    background: #EAEAEA;*/
 }
-table#trackTable tr:nth-child(odd) td {
+tbody#trackTableBody tr:nth-child(odd) td {
     background: #EBFBFF;
 }
 table#trackTable th.play,
-table#trackTable td.play {
+tbody#trackTableBody td.play {
     width: 10px;
     border-left: 0;
 }
-table#trackTable td.play a {
+tbody#trackTableBody td.play a {
     width: 10px;
     text-align: center;
 }
-table#trackTable span.resolving,
-table#trackTable span.resolved,
-table#trackTable tr.resolving span.notFound,
-table#trackTable tr.resolved span.notFound {
+tbody#trackTableBody span.resolving,
+tbody#trackTableBody span.resolved,
+tbody#trackTableBody tr.resolving span.notFound,
+tbody#trackTableBody tr.resolved span.notFound {
     display: none;
 }
-table#trackTable tr.resolving span.resolving,
-table#trackTable tr.notFound span.notFound,
-table#trackTable tr.resolved span.resolved {
+tbody#trackTableBody tr.resolving span.resolving,
+tbody#trackTableBody tr.notFound span.notFound,
+tbody#trackTableBody tr.resolved span.resolved {
     display: inline;
 }
-table#trackTable tr.resolved a {
+tbody#trackTableBody tr.resolved a {
     color: #222;
 }
-table#trackTable tr.playing a {
-    background: #C0ECFF;
+tbody#trackTableBody tr.playing a {
+    background: #0068FF;
+    color: #fff;
+}
+tbody#trackTableBody tr.error a {
+    background: #ADAFAB;
+    color: #222;
 }

@@ -7,59 +7,107 @@
 </head>
 <body>
     <div id="container">
-        <table id="browser" cellspacing="0" cellpadding="0">
-            <tbody>
-                <tr>
-                    <td rowspan="3" id="sourceCell">
-                        <div id="sources">
-                            <h2>Sources</h2>
-                            <p id="sourceLoading">Loading sources…</p>
-                            <ul id="sourceList">
-                            </ul>
-                        </div>
-                    </td>
-                    <th id="artistHead">
-                        <a href="#">Artists</a>
-                    </th>
-                    <th id="albumHead">
-                        <a href="#">Albums</a>
-                    </th>
-                </tr>
-                <tr>
-                    <td id="artistPane" class="pane">
-                        <div id="artists">
-                            <ol id="artistList"></ol>
-                            <div id="artistsLoading" class="progress">
-                                <img src="/progress.gif" width="220" height="19" />
+        <div id="statusHead">
+            <img src="http://cdn.last.fm/flatness/favicon.2.ico" width="16" height="16">
+            Last.fm account:
+            <a href="#" id="lastfmUser"><span></span></a>
+            <small>
+                -
+                <a href="#" id="lastfmSwitch">Switch accounts</a>
+                <a href="#" id="lastfmSwitchCancel" class="importCancel">Back to player</a>
+            </small>
+        </div>
+        
+        <div id="landing">
+            <form action="" id="import">
+                <p>
+                    <label for="importUsername">
+                        <img src="http://cdn.last.fm/flatness/favicon.2.ico" width="16" height="16">
+                        Import your library from Last.fm
+                    </label>
+                </p>
+                <p>
+                    <input type="text" name="username" id="importUsername" size="35">
+                    <input type="submit" value="Need input">
+                </p>
+            </form>
+            <a href="#" class="importCancel">Cancel</a>
+        </div>
+        
+        <div id="player">
+            <table id="browser" cellspacing="0" cellpadding="0">
+                <tbody>
+                    <tr>
+                        <td rowspan="3" id="sourceCell">
+                            <div id="sources">
+                                <h2>Sources</h2>
+                                <p id="sourceLoading">Loading sources…</p>
+                                <ul id="sourceList">
+                                </ul>
                             </div>
-                        </div>
-                    </td>
-                    <td id="albumPane" class="pane">
-                        <div id="albums">
-                            <ol id="albumList"></ol>
-                            <p id="chooseAlbum">Choose an artist to load their albums</p>
-                            <div id="albumsLoading" class="progress">
-                                <img src="/progress.gif" width="220" height="19" />
+                        </td>
+                        <th id="artistHead">
+                            <a href="#">Artists</a>
+                        </th>
+                        <th id="albumHead">
+                            <a href="#">Albums</a>
+                        </th>
+                    </tr>
+                    <tr>
+                        <td id="artistPane" class="pane">
+                            <div id="artists">
+                                <ol id="artistList"></ol>
+                                <div id="artistsLoading" class="progress">
+                                    <img src="/progress.gif" width="220" height="19" />
+                                </div>
                             </div>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td id="trackPane" class="pane" colspan="2">
-                        <div id="tracks">
-                            <table id="trackTable" cellspacing="0" cellpadding="0">
-                                <tbody id="trackTableBody">
-                                </tbody>
-                            </table>
-                            <div id="tracksLoading" class="progress">
-                                <img src="/progress.gif" width="220" height="19" />
+                        </td>
+                        <td id="albumPane" class="pane">
+                            <div id="albums">
+                                <ol id="albumList"></ol>
+                                <p id="chooseAlbum">Choose an artist</p>
+                                <div id="albumsLoading" class="progress">
+                                    <img src="/progress.gif" width="220" height="19" />
+                                </div>
                             </div>
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        <p><a href="http://github.com/jwheare/player/tree">Code on Github</a> | Made by <a href="http://james.wheare.org/">James Wheare</a> | Work in Progress. Mostly a UI concept for now.</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td id="trackPane" class="pane" colspan="2">
+                            <div id="tracks">
+                                <table id="trackTable" cellspacing="0" cellpadding="0">
+                                    <thead>
+                                        <tr class="head" id="trackHead">
+                                            <th class="play">
+                                                <a href="#">&nbsp;</a>
+                                            </th>
+                                            <th>
+                                                <a href="#">Name</a>
+                                            </th>
+                                            <th>
+                                                <a href="#">Time</a>
+                                            </th>
+                                            <th>
+                                                <a href="#">Artist</a>
+                                            </th>
+                                            <th>
+                                                <a href="#">Album</a>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="trackTableBody">
+                                    </tbody>
+                                </table>
+                                <div id="tracksLoading" class="progress">
+                                    <img src="/progress.gif" width="220" height="19" />
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <!-- <p id="footer"><a href="http://github.com/jwheare/player/tree">Code on Github</a> | Made by <a href="http://james.wheare.org/">James Wheare</a> | Work in Progress. Mostly a UI concept for now.</p> -->
     </div>
     
     <script type="text/javascript" src="jquery.js"></script>

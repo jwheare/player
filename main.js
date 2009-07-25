@@ -16,8 +16,31 @@ soundManager.onload = function () {
     Playdar.setup_player(soundManager);
     Playdar.client.init();
     
-    PLAYER.fetch_artists();
+    PLAYER.init();
 };
+
+// Handle last.fm import form
+$('#import').submit(function (e) {
+    e.preventDefault();
+    var params = PLAYER.serialize_form(this);
+    if (params.username) {
+        // Clear the inputs and refocus
+        PLAYER.setLastfmUser(params.username);
+    }
+});
+
+// Handle cancel import click
+$('.importCancel').click(function (e) {
+    e.preventDefault();
+    PLAYER.switchToPlayer();
+});
+
+// Handle switch accounts click
+$('#lastfmSwitch').click(function (e) {
+    e.preventDefault();
+    PLAYER.switchToLanding();
+    $('.importCancel').show();
+});
 
 // Handle clicks to a track row
 $('#tracks').click(function (e) {

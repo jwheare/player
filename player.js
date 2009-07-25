@@ -4,7 +4,6 @@ PLAYER = {
     // lastfm_ws_url: "http://james.ws.staging.last.fm",
     // lastfm_ws_url: "http://wsdev.audioscrobbler.com",
     lastfm_ws_url: "http://ws.audioscrobbler.com",
-    lastfm_username: "jwheare",
     
     auth_details: {
         name: "Media Player",
@@ -14,6 +13,52 @@ PLAYER = {
     q_tracks: {},
     s_tracks: {},
     
+    init: function () {
+        var username = Playdar.Util.getcookie('lastfm_username');
+        if (username) {
+            PLAYER.setLastfmUser(username);
+        } else {
+            PLAYER.switchToLanding();
+        }
+    },
+    
+    switchToLanding: function () {
+        $('#lastfmSwitchCancel').show();
+        $('#lastfmSwitch').hide();
+        $('#player').hide();
+        $('#player').css({ opacity: 0 });
+        $('#landing').show();
+        $('#landing').animate({ opacity: 1 }, 300);
+        $('#importUsername').focus().select();
+    },
+    
+    switchToPlayer: function () {
+        $('#lastfmSwitchCancel').hide();
+        $('#lastfmSwitch').show();
+        $('#landing').hide();
+        $('#landing').css({ opacity: 0 });
+        $('#player').show();
+        $('#player').animate({ opacity: 1 }, 300);
+    },
+    
+    setLastfmUser: function (username) {
+        Playdar.Util.setcookie('lastfm_username', username);
+        PLAYER.lastfm_username = username;
+        $('#lastfmUser span').text(username);
+        $('#lastfmUser').attr('href', "http://www.last.fm/user/" + username);
+        $('#statusHead').show();
+        $('#importUsername').val(username);
+        PLAYER.switchToPlayer();
+        PLAYER.fetch_artists();
+    },
+    
+    serialize_form: function (form) {
+        var params = {};
+        $.each($(form).serializeArray(), function (i, item) {
+            params[item.name] = item.value;
+        });
+        return params;
+    },
     
     // Not called when served from cache
     onResultLoad: function () {
@@ -22,6 +67,7 @@ PLAYER = {
             if (this.readyState == 2) { // failed/error
                 // Switch track highlight in the playlist
                 PLAYER.resetResult.call(this);
+                track_item.removeClass('playing');
                 track_item.addClass('error');
             }
         }
@@ -32,6 +78,7 @@ PLAYER = {
         if (track_item) {
             // Update the now playing track
             PLAYER.now_playing = this.sID;
+            track_item.addClass('playing');
         }
     },
     onResultPause: function () {
@@ -49,7 +96,6 @@ PLAYER = {
             // Highlight the track in the playlist
             track_item.removeClass('paused');
             track_item.removeClass('error');
-            track_item.addClass('playing');
         }
         return track_item;
     },
@@ -190,6 +236,8 @@ PLAYER = {
     },
     
     fetch_artists: function () {
+        $('#artistList').empty();
+        $('#artistsLoading').show();
         PLAYER.get_artist_page(1);
         PLAYER.artist_names = [];
         PLAYER.artist_lookup = {};
@@ -306,11 +354,13 @@ PLAYER = {
         $('#trackTableBody tr.' + album.attr('id')).show();
     },
     fetch_tracks: function (artist) {
+        Playdar.client.cancel_resolve();
         $('#trackTableBody').empty();
         $('#tracksLoading').show();
         PLAYER.tracks = [];
         PLAYER.track_lookup = {};
-        PLAYER.get_track_page(PLAYER.artist_lookup[artist.attr('id')], 1);
+        var artist_id = artist.attr('id');
+        PLAYER.get_track_page(PLAYER.artist_lookup[artist_id], 1);
     },
     get_track_page: function (artist, page) {
         var query_params = {
