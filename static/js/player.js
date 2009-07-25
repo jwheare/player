@@ -19,6 +19,7 @@ PLAYER = {
         var hash_parts = PLAYER.getHashParts();
         if (hash_parts.username) {
             PLAYER.redirectToLastfmUser(hash_parts.username);
+            return;
         }
         // Check the URL for a username
         var url_username = PLAYER.getLastfmUserFromURL();
@@ -107,6 +108,7 @@ PLAYER = {
         Playdar.Util.deletecookie(PLAYER.lastfm_user_cookie);
         // Refresh to current user's library
         PLAYER.redirectToLastfmUser(PLAYER.lastfm_username);
+        return;
     },
     
     /* Mode switching */
