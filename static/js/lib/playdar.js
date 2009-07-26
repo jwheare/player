@@ -2,7 +2,7 @@ Playdar = {
     VERSION: "0.4.3",
     SERVER_ROOT: "localhost",
     SERVER_PORT: "8888",
-    STATIC_HOST: "http://www.playdar.org",
+    STATIC_HOST: "http://playdar",
     STAT_TIMEOUT: 2000,
     AUTH_POPUP_NAME: "PD_auth",
     AUTH_POPUP_SIZE: {
@@ -980,6 +980,9 @@ Playdar.StatusBar.prototype = {
         }
         var portion_played = sound.position / duration;
         this.playhead.style.width = Math.round(portion_played * this.progress_bar_width) + "px";
+        // Call the loading handler too because the sound may have fully loaded while
+        // we were playing a different track
+        this.loading_handler(sound);
     },
     loading_handler: function (sound) {
         // Update the loading progress bar

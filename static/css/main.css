@@ -240,12 +240,12 @@ div.progress {
 #tracks {
     position: relative;
     overflow: auto;
-    min-height: 42px;
+    min-height: 38px;
     max-height: 400px;
 }
 #tracksLoading {
     display: none;
-    margin-top: 1px;
+    margin-top: 0px;
 }
 table#trackTable {
     width: 100%;
