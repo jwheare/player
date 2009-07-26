@@ -266,8 +266,8 @@ PLAYER = {
     /* Tracks */
     
     filter_tracks: function (album) {
-        $('#trackTableBody tr').hide();
-        $('#trackTableBody tr.' + album.attr('id')).show();
+        $('#trackTableBody tr').removeClass('show');
+        $('#trackTableBody tr.' + album.attr('id')).addClass('show');
     },
     fetch_tracks: function (artist) {
         Playdar.client.cancel_resolve();
@@ -322,7 +322,7 @@ PLAYER = {
                 duration_link.html('&nbsp;');
             }
             album_link = $('<a href="#">');
-            album_class = 'album_all ';
+            album_class = 'album_all show ';
             if (track.album && track.album.name) {
                 album_link.text(track.album.name);
                 album_class += PLAYER.album_id_lookup[track.album.name];
@@ -416,7 +416,6 @@ PLAYER = {
             if (this.readyState == 2) { // failed/error
                 // Switch track highlight in the playlist
                 PLAYER.resetResult.call(this);
-                track_item.removeClass('playing');
                 track_item.addClass('error');
             }
         }
@@ -444,7 +443,7 @@ PLAYER = {
         if (track_item) {
             // Highlight the track in the playlist
             track_item.removeClass('paused');
-            track_item.removeClass('error');
+            track_item.addClass('playing');
         }
         return track_item;
     },
@@ -453,14 +452,12 @@ PLAYER = {
         if (track_item) {
             // Remove track highlight in the playlist
             track_item.removeClass('playing');
+            track_item.removeClass('paused');
         }
         return track_item;
     },
     onResultStop: function () {
         var track_item = PLAYER.resetResult.call(this);
-        if (track_item) {
-            track_item.removeClass('paused');
-        }
         // Clear the now playing track
         PLAYER.now_playing = null;
         Playdar.player.stop_current();
@@ -495,21 +492,21 @@ PLAYER = {
         var current_track = PLAYER.now_playing;
         if (!current_track) {
             // Get the first perfect match
-            current_track = $('#trackTableBody tr.resolved').data('sid');
+            current_track = $('#trackTableBody tr.resolved.show').data('sid');
         }
         PLAYER.play_track(current_track);
     },
     play_next_track: function () {
         var current_track = PLAYER.s_tracks[PLAYER.now_playing];
         if (current_track) {
-            var next_track = current_track.nextAll('tr.resolved').data('sid');
+            var next_track = current_track.nextAll('tr.resolved.show').data('sid');
             PLAYER.play_track(next_track);
         }
     },
     play_previous_track: function () {
         var current_track = PLAYER.s_tracks[PLAYER.now_playing];
         if (current_track) {
-            var previous_track = current_track.prevAll('tr.resolved').data('sid');
+            var previous_track = current_track.prevAll('tr.resolved.show').data('sid');
             PLAYER.play_track(previous_track);
         }
     },
