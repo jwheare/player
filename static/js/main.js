@@ -1,6 +1,4 @@
-Playdar.REFRESH_INTERVAL = 500;
 Playdar.MAX_CONCURRENT_RESOLUTIONS = 10;
-
 Playdar.setup(PLAYER.auth_details);
 Playdar.client.register_listeners({
     onAuth: function () {
