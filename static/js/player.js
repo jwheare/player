@@ -1,9 +1,6 @@
 PLAYER = {
     /* Last.fm settings */
     lastfm_api_key: "b25b959554ed76058ac220b7b2e0a026",
-    // lastfm_ws_url: "http://james.ws.dev.last.fm",
-    // lastfm_ws_url: "http://james.ws.staging.last.fm",
-    // lastfm_ws_url: "http://wsdev.audioscrobbler.com",
     lastfm_ws_url: "http://ws.audioscrobbler.com",
     lastfm_user_cookie: "lastfm_username",
     
@@ -11,7 +8,7 @@ PLAYER = {
     auth_details: {
         name: "Media Player",
         website: "http://player/",
-        receiverurl: "http://player/playdarauth.html"
+        receiverurl: "http://player/static/playdarauth.html"
     },
     
     init: function () {
