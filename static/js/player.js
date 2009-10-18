@@ -7,8 +7,8 @@ PLAYER = {
     /* Playdar auth */
     auth_details: {
         name: "Media Player",
-        website: "http://player/",
-        receiverurl: "http://player/static/playdarauth.html"
+        website: "http://player.playlick.com/",
+        receiverurl: "http://player.playlick.com/static/playdarauth.html"
     },
     
     init: function () {
