@@ -382,8 +382,8 @@ PLAYER = {
         var className = 'notFound';
         if (response.results.length) {
             var result = response.results[0];
-            // Register stream on perfect match only
-            if (result.score == 1) {
+            // Register stream on near perfect match only
+            if (result.score > 0.9) {
                 PLAYER.highlight_result_source(result);
                 className = 'resolved';
                 var sid = result.sid;
@@ -576,7 +576,10 @@ PLAYER = {
     // Triggered during Playdar resolve
     highlight_result_source: function (result) {
         // console.dir(result);
-        // Highligh the IP source that provided this result
+        if (!result.url) {
+            return false;
+        }
+        // Highlight the IP source that provided this result
         var ip_match = result.url.match(/^http:\/\/(.*)\//);
         if (ip_match) {
             var ip = ip_match[1];
@@ -586,7 +589,7 @@ PLAYER = {
             }
             PLAYER.highlight_source(source);
         }
-        // Highligh the local source that provided this result
+        // Highlight the local source that provided this result
         var local_match = result.url.match(/^file:\/\/\//);
         if (local_match) {
             var host = Playdar.SERVER_ROOT + ":" + Playdar.SERVER_PORT;
