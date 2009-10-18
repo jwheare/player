@@ -576,6 +576,7 @@ PLAYER = {
     // Triggered during Playdar resolve
     highlight_result_source: function (result) {
         // console.dir(result);
+        // API regression? Results don't have a URL anymore.
         if (!result.url) {
             return false;
         }
