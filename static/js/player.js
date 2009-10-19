@@ -383,7 +383,7 @@ PLAYER = {
         if (response.results.length) {
             var result = response.results[0];
             // Register stream on near perfect match only
-            if (result.score > 0.9) {
+            if (result.score > 0.99) {
                 PLAYER.highlight_result_source(result);
                 className = 'resolved';
                 var sid = result.sid;
