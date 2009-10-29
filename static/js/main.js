@@ -8,7 +8,7 @@ Playdar.client.register_listeners({
 });
 Playdar.client.register_results_handler(PLAYER.results_handler);
 
-soundManager.url = '/static/swf/soundmanager2_flash9.swf';
+soundManager.url = '/static/js/lib/playdar/soundmanager2_flash9.swf';
 soundManager.consoleOnly = true; // for debug mode
 soundManager.flashVersion = 9;
 soundManager.useMovieStar = true;
