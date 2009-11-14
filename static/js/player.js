@@ -89,7 +89,7 @@ PLAYER = {
     /* Cookies */
     
     getLastfmUserCookie: function () {
-        var username = Playdar.Util.getcookie(PLAYER.lastfm_user_cookie);
+        var username = Playdar.Util.getCookie(PLAYER.lastfm_user_cookie);
         // Update the clear cookie text
         if (username) {
             PLAYER.setLastfmUserCookie(username);
@@ -97,11 +97,11 @@ PLAYER = {
         return username;
     },
     setLastfmUserCookie: function (username) {
-        Playdar.Util.setcookie(PLAYER.lastfm_user_cookie, username, 365);
+        Playdar.Util.setCookie(PLAYER.lastfm_user_cookie, username, 365);
         $('#clearCookies').text("Clear cookie: ‘"+username+"’").show();
     },
     clearLastfmUserCookie: function () {
-        Playdar.Util.deletecookie(PLAYER.lastfm_user_cookie);
+        Playdar.Util.deleteCookie(PLAYER.lastfm_user_cookie);
         // Refresh to current user's library
         PLAYER.redirectToLastfmUser(PLAYER.lastfm_username);
         return;
@@ -509,12 +509,12 @@ PLAYER = {
     
     /* Sources */
     load_roster: function () {
-        var query_params = Playdar.client.add_auth_token({
+        var query_params = Playdar.client.addAuthToken({
             call_id: new Date().getTime(),
             jsonp: 'PLAYER.roster_callback'
         });
-        var url = Playdar.client.get_base_url('/greynet/get_roster', query_params);
-        Playdar.Util.loadjs(url);
+        var url = Playdar.client.getBaseUrl('/greynet/get_roster', query_params);
+        Playdar.Util.loadJs(url);
     },
     add_lan_source: function (ip) {
         var source_link = $('<a>')
