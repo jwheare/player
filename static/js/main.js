@@ -1,21 +1,21 @@
 Playdar.MAX_CONCURRENT_RESOLUTIONS = 10;
-Playdar.setup(PLAYER.auth_details);
-Playdar.client.register_listeners({
+Playdar.auth_details.receiverurl = Playdar.Util.location_from_url( "/static/playdarauth.html").href;
+Playdar.setupClient({
     onAuth: function () {
         Playdar.client.autodetect(PLAYER.track_handler);
         PLAYER.load_roster();
-    }
+    },
+    onResults: PLAYER.results_handler
 });
-Playdar.client.register_results_handler(PLAYER.results_handler);
 
-soundManager.url = '/static/js/lib/playdar/soundmanager2_flash9.swf';
+soundManager.url = '/static/js/lib/sm2/swf/soundmanager2_flash9.swf';
 soundManager.consoleOnly = true; // for debug mode
 soundManager.debugMode = false;
 soundManager.flashVersion = 9;
 soundManager.useMovieStar = true;
 soundManager.onload = function () {
-    Playdar.setup_player(soundManager);
-    Playdar.client.init();
+    Playdar.setupPlayer(soundManager);
+    Playdar.client.go();
     
     PLAYER.init();
 };
