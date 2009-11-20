@@ -8,17 +8,17 @@ Playdar.setupClient({
     onResults: PLAYER.results_handler
 });
 
-soundManager.url = '/static/js/lib/sm2/swf/soundmanager2_flash9.swf';
-soundManager.consoleOnly = true; // for debug mode
-soundManager.debugMode = false;
-soundManager.flashVersion = 9;
-soundManager.useMovieStar = true;
-soundManager.onload = function () {
-    Playdar.setupPlayer(soundManager);
-    Playdar.client.go();
-    
-    PLAYER.init();
-};
+Playdar.setupPlayer(
+    soundManager,
+    '/static/js/lib/sm2/swf/soundmanager2_flash9.swf',
+    function () {
+        PLAYER.init();
+        Playdar.client.go();
+    },
+    {
+        debugMode: false
+    }
+);
 
 // Handle last.fm import form
 $('#import').submit(function (e) {
