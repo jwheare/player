@@ -1,2 +1,2 @@
 User-Agent: *
-Disallow: playdar_auth.html
+Disallow: static/playdarauth.html
