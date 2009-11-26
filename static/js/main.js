@@ -9,7 +9,7 @@ Playdar.setupClient({
 });
 
 Playdar.setupPlayer(
-    soundManager,
+    '/static/js/lib/sm2/script/soundmanager2-nodebug-jsmin.js',
     '/static/js/lib/sm2/swf/soundmanager2_flash9.swf',
     function () {
         PLAYER.init();
