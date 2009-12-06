@@ -309,3 +309,8 @@ tbody#trackTableBody tr.error a {
     background: #ADAFAB;
     color: #222;
 }
+
+#sm2-container {
+    height: 26px;
+    margin: 0 auto;
+}
