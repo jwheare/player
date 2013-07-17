@@ -1,6 +1,6 @@
 PLAYER = {
     /* Last.fm settings */
-    lastfm_api_key: "b25b959554ed76058ac220b7b2e0a026",
+    lastfm_api_key: "e8df82603ada5285f4e2dd09d4cada1d",
     lastfm_ws_url: "http://ws.audioscrobbler.com",
     lastfm_user_cookie: "lastfm_username",
     
